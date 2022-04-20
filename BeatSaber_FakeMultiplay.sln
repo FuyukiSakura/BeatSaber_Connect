@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Server", "BeatSaber_FakeMultiplay\Server\BeatSaber_FakeMultiplay.Server.csproj", "{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Client", "BeatSaber_FakeMultiplay\Client\BeatSaber_FakeMultiplay.Client.csproj", "{F6150564-3E60-4B41-BDF6-8A5E5870525D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Shared", "BeatSaber_FakeMultiplay\Shared\BeatSaber_FakeMultiplay.Shared.csproj", "{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6150564-3E60-4B41-BDF6-8A5E5870525D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6150564-3E60-4B41-BDF6-8A5E5870525D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6150564-3E60-4B41-BDF6-8A5E5870525D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6150564-3E60-4B41-BDF6-8A5E5870525D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {793E3CE3-4545-43F9-9D3C-5DF7CAFCADEA}
+	EndGlobalSection
+EndGlobal
