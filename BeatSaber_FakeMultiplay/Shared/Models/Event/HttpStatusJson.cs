@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace BeatSaber_FakeMultiplay.Shared.Models.Event
@@ -18,5 +19,29 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.Event
                 new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
             },
         };
+
+        /// <summary>
+        /// Serialize json string returned from http-status
+        /// returns null when serialize error occurs
+        /// </summary>
+        /// <param name="httpStatusJson"></param>
+        /// <returns></returns>
+        public static SocketEvent? Serialize(string httpStatusJson)
+        {
+            try
+            {
+                return JsonSerializer.Deserialize<SocketEvent>(httpStatusJson, SerializerOptions);
+            }
+            catch (JsonException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }

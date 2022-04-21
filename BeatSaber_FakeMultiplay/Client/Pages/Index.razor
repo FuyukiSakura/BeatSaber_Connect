@@ -6,7 +6,7 @@
 @using BeatSaber_FakeMultiplay.Shared.Models.Event
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
 @inject NavigationManager _navigationManager
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime _jsRuntime
 @implements IAsyncDisposable
 
 <PageTitle>Index</PageTitle>
@@ -131,7 +131,7 @@
     /// <returns></returns>
     private async Task CopyMonitorLink()
     {
-        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", _navigationManager.Uri + "/Monitor");
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _navigationManager.Uri + "/Monitor");
     }
 
     /// <summary>
@@ -168,16 +168,17 @@
             while (!result.EndOfMessage);
             
             var httpStatusJson = Encoding.UTF8.GetString(ms.ToArray());
-            var socketEvent = JsonSerializer.Deserialize<SocketEvent>(httpStatusJson, HttpStatusJson.SerializerOptions);
-            if (socketEvent == null) return; // Cannot determine result
+            var socketEvent = HttpStatusJson.Serialize(httpStatusJson);
+            if (socketEvent == null) continue; // Cannot determine result
 
             if (socketEvent.Event != EventType.Hello // is hello event
                 && socketEvent.Event != EventType.ScoreChanged // is score update event
                 || socketEvent.Status.Performance == null // No performance data
-            ) continue;
+                ) continue;
 
             var performanceJson = JsonSerializer.Serialize(socketEvent.Status.Performance);
             await _hubConnection!.SendAsync("ScoreUpdate", _playerName, performanceJson);
+        
         }
     }
 }
