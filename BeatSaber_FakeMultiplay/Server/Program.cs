@@ -1,11 +1,22 @@
+using BeatSaber_FakeMultiplay.Server.Hubs;
+using BeatSaber_FakeMultiplay.Shared.Models.Socket;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddSignalR(conf =>
+{
+    conf.MaximumReceiveMessageSize = null;
+});
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 
 var app = builder.Build();
 
@@ -31,6 +42,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<BsHub>(SocketUri.Lobby);
 app.MapFallbackToFile("index.html");
 
 app.Run();

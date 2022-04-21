@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Server", "BeatSaber_FakeMultiplay\Server\BeatSaber_FakeMultiplay.Server.csproj", "{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaber_FakeMultiplay.Server", "BeatSaber_FakeMultiplay\Server\BeatSaber_FakeMultiplay.Server.csproj", "{61C0DF5C-C3D1-49D9-ADD5-134EF05B3F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Client", "BeatSaber_FakeMultiplay\Client\BeatSaber_FakeMultiplay.Client.csproj", "{F6150564-3E60-4B41-BDF6-8A5E5870525D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaber_FakeMultiplay.Client", "BeatSaber_FakeMultiplay\Client\BeatSaber_FakeMultiplay.Client.csproj", "{F6150564-3E60-4B41-BDF6-8A5E5870525D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber_FakeMultiplay.Shared", "BeatSaber_FakeMultiplay\Shared\BeatSaber_FakeMultiplay.Shared.csproj", "{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaber_FakeMultiplay.Shared", "BeatSaber_FakeMultiplay\Shared\BeatSaber_FakeMultiplay.Shared.csproj", "{1C0DAB2D-A74D-4A87-9555-8EE014D05DA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

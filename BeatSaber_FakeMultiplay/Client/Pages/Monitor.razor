@@ -1,0 +1,71 @@
+﻿@page "/monitor"
+@layout EmptyLayout
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Text.Json
+@using BeatSaber_FakeMultiplay.Shared.Models.Event
+@using BeatSaber_FakeMultiplay.Shared.Models.Socket
+@inject NavigationManager _navigationManager
+@implements IAsyncDisposable
+
+<PageTitle>ScoreBoard</PageTitle>
+
+<ul id="scoreBoard">
+    @if (_leaderBoard != null)
+    {
+        foreach (var (playerName, gameStatus) in _leaderBoard)
+        {
+            <li>@playerName : @gameStatus.Score (@((gameStatus.RelativeScore * 100).ToString("0.00"))%) | (@gameStatus.Rank)</li>
+        }
+    }
+</ul>
+
+@code {
+    private HubConnection? _hubConnection;
+    private readonly Dictionary<string, Performance> _playerStatusList = new();
+    private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
+    private string? _playerName;
+
+    ///
+    /// <inheritdoc />
+    ///
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
+            .Build();
+
+        _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
+
+        await _hubConnection.StartAsync();
+    }
+
+    /// <summary>
+    /// Handles player status update
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="httpStatusJson"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    void PlayerStatus_OnUpdated(string playerName, string httpStatusJson)
+    {
+        var socketEvent = JsonSerializer.Deserialize<Performance>(httpStatusJson);
+        if (socketEvent == null) return; // Cannot determine result
+
+        _playerStatusList[playerName] = socketEvent;
+        _leaderBoard = _playerStatusList.OrderByDescending(pair => pair.Value.Score);
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Checks if the client is connected
+    /// </summary>
+    public bool IsConnected =>
+        _hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.DisposeAsync();
+        }
+    }
+}
