@@ -1,15 +1,15 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
 @using System.Net.WebSockets
-@using System.Text
 @using System.Text.Json
+@using BeatSaber_FakeMultiplay.Client.Services
 @using BeatSaber_FakeMultiplay.Shared.Models.Event
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @implements IAsyncDisposable
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Lobby</PageTitle>
 
 @if (!string.IsNullOrWhiteSpace(_errorMessage))
 {
@@ -55,14 +55,13 @@
 
 @code {
     private HubConnection? _hubConnection;
-    private ClientWebSocket? _beatSaberConnection;
 
     CancellationTokenSource? _httpStatusSocketReadCancellationSource;
     private readonly List<string> _messages = new();
     private string _errorMessage = "";
     private readonly Dictionary<string, Performance> _playerStatusList = new();
     private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
-    private string? _playerName;
+    private string _playerName = "";
 
     ///
     /// <inheritdoc />
@@ -109,12 +108,14 @@
     {
         if (_hubConnection is null) return; // WebSocket connection not established yet
         _errorMessage = ""; // Resets the error message
+        _httpStatusSocketReadCancellationSource?.Cancel();
 
         try
         {
-            _beatSaberConnection = new ClientWebSocket();
-            await _beatSaberConnection.ConnectAsync(new Uri("ws://127.0.0.1:6557/socket"), CancellationToken.None);
-            _ = HttpStatusReceiveLoop();
+            var beatSaberConnection = new ClientWebSocket();
+            await beatSaberConnection.ConnectAsync(new Uri("ws://127.0.0.1:6557/socket"), CancellationToken.None);
+            _httpStatusSocketReadCancellationSource = new CancellationTokenSource();
+            _ = HttpStatusSocketService.ReceiveAsync(_playerName, beatSaberConnection, _hubConnection, _httpStatusSocketReadCancellationSource);
 
             await _hubConnection.SendAsync("JoinRoom", _playerName);
         }
@@ -131,7 +132,7 @@
     /// <returns></returns>
     private async Task CopyMonitorLink()
     {
-        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _navigationManager.Uri + "/Monitor");
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _navigationManager.Uri + "LeaderBoard");
     }
 
     /// <summary>
@@ -145,40 +146,6 @@
         if (_hubConnection is not null)
         {
             await _hubConnection.DisposeAsync();
-        }
-    }
-
-    /// <summary>
-    /// Receives update from Beat Saber HttpStatus
-    /// and broadcast it to other players
-    /// </summary>
-    /// <returns></returns>
-    async Task HttpStatusReceiveLoop()
-    {
-        _httpStatusSocketReadCancellationSource = new CancellationTokenSource();
-        while (!_httpStatusSocketReadCancellationSource.IsCancellationRequested)
-        {
-            var ms = new MemoryStream();
-            WebSocketReceiveResult result;
-            do {
-                var messageBuffer = WebSocket.CreateClientBuffer(1024, 16);
-                result = await _beatSaberConnection.ReceiveAsync(messageBuffer, CancellationToken.None);
-                ms.Write(messageBuffer.Array, messageBuffer.Offset, result.Count);
-            }
-            while (!result.EndOfMessage);
-            
-            var httpStatusJson = Encoding.UTF8.GetString(ms.ToArray());
-            var socketEvent = HttpStatusJson.Serialize(httpStatusJson);
-            if (socketEvent == null) continue; // Cannot determine result
-
-            if (socketEvent.Event != EventType.Hello // is hello event
-                && socketEvent.Event != EventType.ScoreChanged // is score update event
-                || socketEvent.Status.Performance == null // No performance data
-                ) continue;
-
-            var performanceJson = JsonSerializer.Serialize(socketEvent.Status.Performance);
-            await _hubConnection!.SendAsync("ScoreUpdate", _playerName, performanceJson);
-        
         }
     }
 }
