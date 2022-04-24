@@ -7,6 +7,11 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.Socket
     public static class BsHubMessage
     {
         /// <summary>
+        /// Gets the message name of the pub/sub event when user joins the room
+        /// </summary>
+        public const string JoinRoom = "JoinRoom";
+
+        /// <summary>
         /// Gets the message name of the pub/sub event of player's current score details
         /// </summary>
         public const string ScoreUpdate = "ScoreUpdated";

@@ -1,0 +1,207 @@
+﻿@page "/lobby"
+@page "/lobby/{RoomId}"
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Net.WebSockets
+@using System.Text.Json
+@using BeatSaber_FakeMultiplay.Client.Services
+@using BeatSaber_FakeMultiplay.Shared.Models.Event
+@using BeatSaber_FakeMultiplay.Shared.Models.Socket
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@implements IAsyncDisposable
+
+<PageTitle>Lobby</PageTitle>
+
+@if (!string.IsNullOrWhiteSpace(_errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @((MarkupString) _errorMessage)
+    </div>
+
+    <div class="alert alert-info" role="alert">
+        FakeMultiplay requires <a href="https://github.com/opl-/beatsaber-http-status/releases">http-status</a>
+        or <a href="https://github.com/denpadokei/HttpSiraStatus/releases">HttpSiraStatus</a> to work.
+    </div>
+}
+
+@if (string.IsNullOrWhiteSpace(RoomId))
+{
+    <div class="form-group">
+        <label for="inputRoomName">Room name</label>
+        <input type="text" class="form-control" id="inputRoomName" placeholder="Choose a name" @bind="_preferredRoomId">
+        <small id="roomHelp" class="form-text text-muted">This the the ID of the room name you and your friends will join</small>
+    </div>
+    <button class="btn btn-secondary" @onclick="GoToRoom">Create / Join</button>
+}
+else
+{
+    <div class="form-group">
+        <label for="inputDisplayName">Player name</label>
+        <input type="text" class="form-control" id="inputDisplayName" placeholder="Choose a name" @bind="_playerName">
+        <small id="playerNameHelp" class="form-text text-muted">This is how your name will appear on the scoreboard</small>
+    </div>
+    <button class="btn btn-primary" @onclick="Join" disabled="@(!IsConnected)">Join</button>
+    <button class="btn btn-secondary" @onclick="ShareRoom">Share Room</button>
+    <button class="btn btn-secondary" @onclick="CopyOverlayLink">OBS Overlay Link</button>
+
+    <hr>
+
+    <ul id="messagesList">
+        @foreach (var message in _messages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+
+    <hr>
+
+    <ul id="scoreBoard">
+        @if (_leaderBoard != null)
+        {
+            foreach (var (playerName, gameStatus) in _leaderBoard)
+            {
+                <li>@playerName : @gameStatus.Score (@((gameStatus.RelativeScore * 100).ToString("0.00"))%) | (@gameStatus.Rank)</li>
+            }
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string RoomId { get; set; } = "";
+
+    private HubConnection? _hubConnection;
+    private readonly HttpStatusSocket _httpStatusSocket = new();
+
+    private readonly List<string> _messages = new();
+    private string _errorMessage = "";
+    private readonly Dictionary<string, Performance> _playerStatusList = new();
+    private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
+    private string _preferredRoomId = "";
+    private string _playerName = "";
+
+    ///
+    /// <inheritdoc />
+    ///
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
+            .WithAutomaticReconnect()             
+            .Build();
+
+        _hubConnection.On<string>(BsHubMessage.JoinRoom, (user) =>
+        {
+            var encodedMsg = $"{user} has entered the room";
+            _messages.Add(encodedMsg);
+            StateHasChanged();
+        });
+
+        _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
+
+        await _hubConnection.StartAsync();
+    }
+
+    /// <summary>
+    /// Handles player status update
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="httpStatusJson"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    void PlayerStatus_OnUpdated(string playerName, string httpStatusJson)
+    {
+        var socketEvent = JsonSerializer.Deserialize<Performance>(httpStatusJson);
+        if (socketEvent == null) return; // Cannot determine result
+
+        _playerStatusList[playerName] = socketEvent;
+        _leaderBoard = _playerStatusList.OrderByDescending(pair => pair.Value.Score);
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Navigates user to the new room
+    /// </summary>
+    /// <returns></returns>
+    private void GoToRoom()
+    {
+        _navigationManager.NavigateTo($"{_navigationManager.Uri}/{_preferredRoomId}");
+    }
+
+    /// <summary>
+    /// Joins user to the room
+    /// </summary>
+    /// <returns></returns>
+    private async Task Join()
+    {
+        if (_hubConnection is null) return; // WebSocket connection not established yet
+        _errorMessage = ""; // Resets the error message
+
+        try
+        {
+            _httpStatusSocket.Stop();
+            await _httpStatusSocket.StartAsync();
+            _httpStatusSocket.ScoreChanged += HttpStatusSocket_OnScoreChanged;
+            _httpStatusSocket.SongStart += HttpStatusSocket_OnSongStart;
+            await _hubConnection.SendAsync("JoinRoom", _playerName, RoomId);
+        }
+        catch (WebSocketException ex)
+        {
+            _errorMessage = "Beat Saber is not running.<br /><br />Debug: ";
+            _errorMessage += ex.Message;
+        }
+    }
+
+    /// <summary>
+    /// Handles http-status on song start event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    async void HttpStatusSocket_OnScoreChanged(object? sender, Performance e)
+    {
+        await _hubConnection!.SendAsync("ScoreUpdate", _playerName, RoomId, JsonSerializer.Serialize(e));
+    }
+
+    /// <summary>
+    /// Handles http-status on score changed event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    async void HttpStatusSocket_OnSongStart(object? sender, EventArgs e)
+    {
+        await _hubConnection!.SendAsync("SongStart", RoomId);
+    }
+
+    /// <summary>
+    /// Copies the monitor page link to clipboard
+    /// </summary>
+    /// <returns></returns>
+    private async Task CopyOverlayLink()
+    {
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText",
+            $"{_navigationManager.BaseUri}LeaderBoard/{RoomId}");
+    }
+
+    /// <summary>
+    /// Copies the monitor page link to clipboard
+    /// </summary>
+    /// <returns></returns>
+    private async Task ShareRoom()
+    {
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText",
+            _navigationManager.Uri);
+    }
+
+    /// <summary>
+    /// Checks if the client is connected
+    /// </summary>
+    public bool IsConnected =>
+        _hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.DisposeAsync();
+        }
+    }
+}

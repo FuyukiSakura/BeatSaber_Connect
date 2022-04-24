@@ -1,4 +1,5 @@
 ﻿@page "/LeaderBoard"
+@page "/LeaderBoard/{RoomId}"
 @layout EmptyLayout
 @using Microsoft.AspNetCore.SignalR.Client
 @using System.Text.Json
@@ -18,7 +19,7 @@
                 <div class="card-header sakura-mp-player">@playerName</div>
                 <div class="card-body">
                     <h5 class="card-title sakura-mp-acc">@gameStatus.Rank (@((gameStatus.RelativeScore * 100).ToString("0.00"))%)</h5>
-                    <p class="card-text sakura-mp-score">@gameStatus.Score</p>
+                    <p class="card-text sakura-mp-score">@($"{gameStatus.Score:#,0}")</p>
                 </div>
             </div>
         }
@@ -26,6 +27,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public string RoomId { get; set; } = "";
+
     private HubConnection? _hubConnection;
     private readonly Dictionary<string, Performance> _playerStatusList = new();
     private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
@@ -43,6 +47,7 @@
         _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
 
         await _hubConnection.StartAsync();
+        await _hubConnection.SendAsync("Subscribe", RoomId);
     }
 
     /// <summary>

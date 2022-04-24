@@ -9,32 +9,54 @@ namespace BeatSaber_FakeMultiplay.Server.Hubs
         /// Broadcasts song start event
         /// when a <see cref="BsHubMessage.SongStart" /> event is received
         /// </summary>
+        /// <param name="groupName"></param>
         /// <returns></returns>
-        public async Task SongStart()
+        public async Task SongStart(string groupName)
         {
-            await Clients.All.SendAsync(BsHubMessage.SongStart);
+            if (string.IsNullOrWhiteSpace(groupName)) return; // No room id given
+
+            await Clients.Group(groupName).SendAsync(BsHubMessage.SongStart);
         }
 
         /// <summary>
         /// Broadcasts player score to all subscribers when
         /// an <see cref="BsHubMessage.ScoreUpdate" /> event is received
         /// </summary>
-        /// <param name="playerName"></param>
+        /// <param name="playerName">The name of the joined player</param>
+        /// <param name="groupName"></param>
         /// <param name="httpStatusJson"></param>
         /// <returns></returns>
-        public async Task ScoreUpdate(string playerName, string httpStatusJson)
+        public async Task ScoreUpdate(string playerName, string groupName, string httpStatusJson)
         {
-            await Clients.All.SendAsync(BsHubMessage.ScoreUpdate, playerName, httpStatusJson);
+            if (string.IsNullOrWhiteSpace(groupName)) return; // No room id given
+
+            await Clients.Group(groupName).SendAsync(BsHubMessage.ScoreUpdate, playerName, httpStatusJson);
         }
 
         /// <summary>
         /// Receive events when player enters the room
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">The display name given by the player</param>
+        /// <param name="groupName"></param>
         /// <returns></returns>
-        public async Task JoinRoom(string player)
+        public async Task JoinRoom(string player, string groupName)
         {
-            await Clients.All.SendAsync("PlayerEntered", player);
+            if (string.IsNullOrWhiteSpace(groupName)) return; // No room id given
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Group(groupName).SendAsync(BsHubMessage.JoinRoom, player);
+        }
+
+        /// <summary>
+        /// Adds leader board subscribers page to the group
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public async Task Subscribe(string groupName)
+        {
+            if (string.IsNullOrWhiteSpace(groupName)) return; // No room id given
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
     }
 }
