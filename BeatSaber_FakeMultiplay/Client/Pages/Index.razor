@@ -70,6 +70,7 @@
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
+            .WithAutomaticReconnect()             
             .Build();
 
         _hubConnection.On<string>("PlayerEntered", (user) =>
