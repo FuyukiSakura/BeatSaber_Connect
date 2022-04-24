@@ -39,9 +39,18 @@
             .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
             .Build();
 
+        _hubConnection.On(BsHubMessage.SongStart, Lobby_OnSongStart);
         _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
 
         await _hubConnection.StartAsync();
+    }
+
+    /// <summary>
+    /// Handles lobby song start event
+    /// </summary>
+    void Lobby_OnSongStart()
+    {
+        _playerStatusList.Clear();
     }
 
     /// <summary>

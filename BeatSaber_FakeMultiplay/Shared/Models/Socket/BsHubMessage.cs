@@ -10,5 +10,10 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.Socket
         /// Gets the message name of the pub/sub event of player's current score details
         /// </summary>
         public const string ScoreUpdate = "ScoreUpdated";
+
+        /// <summary>
+        /// Gets the message name of the pub/sub event of game start event
+        /// </summary>
+        public const string SongStart = "SongStarted";
     }
 }

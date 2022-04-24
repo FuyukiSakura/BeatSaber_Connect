@@ -115,6 +115,7 @@
             _httpStatusSocket.Stop();
             await _httpStatusSocket.StartAsync();
             _httpStatusSocket.ScoreChanged += HttpStatusSocket_OnScoreChanged;
+            _httpStatusSocket.SongStart += HttpStatusSocket_OnSongStart;
             await _hubConnection.SendAsync("JoinRoom", _playerName);
         }
         catch (WebSocketException ex)
@@ -125,13 +126,23 @@
     }
 
     /// <summary>
-    /// Handles http-status on score changed event
+    /// Handles http-status on song start event
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     async void HttpStatusSocket_OnScoreChanged(object? sender, Performance e)
     {
         await _hubConnection!.SendAsync("ScoreUpdate", _playerName, JsonSerializer.Serialize(e));
+    }
+
+    /// <summary>
+    /// Handles http-status on score changed event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    async void HttpStatusSocket_OnSongStart(object? sender, EventArgs e)
+    {
+        await _hubConnection!.SendAsync("SongStart");
     }
 
     /// <summary>

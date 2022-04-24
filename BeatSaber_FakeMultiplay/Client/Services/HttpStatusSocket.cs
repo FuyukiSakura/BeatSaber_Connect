@@ -13,6 +13,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         ClientWebSocket _httpStatusConnection = new ();
 
         public event EventHandler<Performance>? ScoreChanged;
+        public event EventHandler? SongStart;
 
         /// <summary>
         /// Starts the http-status socket
@@ -80,6 +81,9 @@ namespace BeatSaber_FakeMultiplay.Client.Services
                     case EventType.ScoreChanged:
                         if (socketEvent.Status.Performance == null) break;
                         ScoreChanged?.Invoke(this, socketEvent.Status.Performance);
+                        break;
+                    case EventType.SongStart:
+                        SongStart?.Invoke(this, EventArgs.Empty);
                         break;
                 }
             }
