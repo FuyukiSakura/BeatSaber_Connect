@@ -1,7 +1,31 @@
 ﻿@page "/"
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@using Microsoft.Extensions.Localization
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Index
+@inject IStringLocalizer<SharedResource> _sharedLocalizer
+@inject IStringLocalizer<IndexResource> _localizer
 
-<PageTitle>Welcome</PageTitle>
-<h3>Welcome</h3>
+<PageTitle>@_sharedLocalizer[nameof(SharedResource.NavHomeText)] - @_sharedLocalizer[nameof(SharedResource.AppTitle)]</PageTitle>
+<h3>@_sharedLocalizer[nameof(SharedResource.NavHomeText)]</h3>
+<div class="row">
+    <div class="col-12">
+        <article>
+            <h4>@_localizer[nameof(IndexResource.BeforeStartTitleText)]</h4>
+            <div class="alert alert-info" role="alert">
+                @((MarkupString) _localizer[nameof(IndexResource.InstallationInfoText)].ToString())
+            </div>
+            <img src="/images/tutorial/en/app-installed.jpg" alt="After installation" />
+            <img src="/images/tutorial/en/installing-the-app.jpg" alt="Install the app" />
+            <pre>@((MarkupString)_localizer[nameof(IndexResource.BeforeStartContentText)].ToString())</pre>
+        </article>
+    </div>
+    <div class="col-12">
+        <article>
+            <h4>@_localizer[nameof(IndexResource.HowToTitleText)]</h4>
+            <pre>@((MarkupString)_localizer[nameof(IndexResource.HowToContentText)].ToString())</pre>
+        </article>
+    </div>
+</div>
 
 @code {
 

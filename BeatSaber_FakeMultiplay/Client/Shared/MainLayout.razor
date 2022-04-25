@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.Extensions.Localization
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@inherits LayoutComponentBase
+@inject IStringLocalizer<SharedResource> _localizer
 
 <div class="page">
     <div class="sidebar">
@@ -7,8 +10,9 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://discord.gg/gHWJ2JTre7" target="_blank">Join my discord</a>
-            <a href="https://sakura.live/" target="_blank">Who is Sakura?</a>
+            <CultureSelector />
+            <a href="https://discord.gg/gHWJ2JTre7" target="_blank">@_localizer[nameof(SharedResource.SupportLinkText)]</a>
+            <a href="https://sakura.live/" target="_blank">@_localizer[nameof(SharedResource.AboutMeLinkText)]</a>
         </div>
 
         <article class="content px-4">

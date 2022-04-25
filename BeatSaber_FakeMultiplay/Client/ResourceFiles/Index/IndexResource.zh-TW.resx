@@ -1,0 +1,51 @@
+﻿<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="HowToTitleText" xml:space="preserve">
+		<value>使用方法</value>
+	</data>
+	<data name="HowToContentText" xml:space="preserve">
+		<value>FakeMultiplay不需要安裝任何特別插件便可以使用。
+
+1. 選「多人連線」.
+2. 輸入一個房間名稱.
+3. 按「創建/參加」
+
+&lt;img src="/images/tutorial/zh/create-room.jpg" alt="Create a new room" /&gt;
+請確保房間名稱不會很容易被猜到。
+
+4. 輸入你的玩家名稱
+5. 按「連接」. 
+* 請確保Beat Saber已經啟動。
+
+&lt;img src="/images/tutorial/zh/connect-to-room.jpg" alt="Connect Beat Saber to the room" /&gt;
+如果沒有顯示「已經加入遊戲」的訊息，請檢查報錯訊息。
+
+6. 其他玩家可以使用「房間分享」功能，或者在創建房間畫面輸入「房間名稱」來加入遊戲。
+7. 將「複製OBS鏈接」輸入直播軟件。
+
+&lt;img src="/images/tutorial/en/obs-browser-source.jpg" alt="OBS Overlay" /&gt;
+* 畫面會根據瀏覽器設定自動調節，請善用OBS內建的「高度/闊度」調節。
+
+8. 請享受不用再考慮版本，沒有插件喇，還有譜面打不開了的多人對戰。</value>
+	</data>
+	<data name="BeforeStartTitleText" xml:space="preserve">
+		<value>前言</value>
+	</data>
+	<data name="InstallationInfoText" xml:space="preserve">
+		<value>為了防止斷線，我們強烈推薦玩家&lt;strong&gt;安裝&lt;/strong&gt;此程式</value>
+	</data>
+	<data name="BeforeStartContentText" xml:space="preserve">
+		<value>現在安裝的話，可以在桌面獲得一個&lt;a href="https://twitch.tv/Brlias" target="_blank"&gt;ばらりあす&lt;/a&gt;先生畫的可愛小櫻圖標一個 :p</value>
+	</data>
+</root>

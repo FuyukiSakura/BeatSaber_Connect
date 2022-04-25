@@ -1,0 +1,44 @@
+﻿<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="NavHomeText" xml:space="preserve">
+		<value>歓迎</value>
+	</data>
+	<data name="NavLobbyText" xml:space="preserve">
+		<value>マルチプレー</value>
+	</data>
+	<data name="NavCreditText" xml:space="preserve">
+		<value>特別謝辞</value>
+	</data>
+	<data name="AppTitle" xml:space="preserve">
+		<value>冬雪桜びーせ部屋</value>
+	</data>
+	<data name="CreditAlphaTesterText" xml:space="preserve">
+		<value>αテスト協力者</value>
+	</data>
+	<data name="AboutMeLinkText" xml:space="preserve">
+		<value>誰か桜だ。。。</value>
+	</data>
+	<data name="SupportLinkText" xml:space="preserve">
+		<value>誰か助けて？</value>
+	</data>
+	<data name="UpdateAvailablePopupText" xml:space="preserve">
+		<value>最新版を掲載しました。更新はこちらから。</value>
+	</data>
+	<data name="SpecialThanksDescriptionText" xml:space="preserve">
+		<value>このサイトの構築にご協力いただいたすべての方に感謝いたします。</value>
+	</data>
+	<data name="CreditSiteBuilderTitle" xml:space="preserve">
+		<value>絵師</value>
+	</data>
+</root>

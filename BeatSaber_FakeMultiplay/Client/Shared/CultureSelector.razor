@@ -1,0 +1,29 @@
+﻿@using  System.Globalization
+@using BeatSaber_FakeMultiplay.Client.Models
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Nav
+
+<select @bind="Culture">
+    @foreach (var (cultureName, culture) in LocalizerSettings.SupportedCulturesWithName)
+    {
+        <option value="@culture">@cultureName</option>
+    }
+</select>
+
+@code
+{
+    private CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
+        {
+            if (CultureInfo.CurrentCulture != value)
+            {
+                var js = (IJSInProcessRuntime)JSRuntime;
+                js.InvokeVoid("blazorCulture.set", value.Name);
+
+                Nav.NavigateTo(Nav.Uri, forceLoad: true);
+            }
+        }
+    }
+}

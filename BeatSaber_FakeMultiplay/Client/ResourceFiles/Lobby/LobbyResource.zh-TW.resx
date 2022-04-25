@@ -1,0 +1,47 @@
+﻿<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="CreateRoomButtonText" xml:space="preserve">
+		<value>創建 / 參加</value>
+	</data>
+	<data name="JoinButtonText" xml:space="preserve">
+		<value>連線</value>
+	</data>
+	<data name="HttpStatusConnectionFailText" xml:space="preserve">
+		<value>部屋連線需要使用 {0} 或 {1} 插件。</value>
+	</data>
+	<data name="UserEnterRoomMessage" xml:space="preserve">
+		<value>已經加入對戰。</value>
+	</data>
+	<data name="BeatSaberNotRunningMessage" xml:space="preserve">
+		<value>偵測不到正在運行的Beat Saber。</value>
+	</data>
+	<data name="RoomNameLabelText" xml:space="preserve">
+		<value>房間名稱</value>
+	</data>
+	<data name="RoomNameHintText" xml:space="preserve">
+		<value>任何擁有房間名稱的路人都可以參加你的房間。</value>
+	</data>
+	<data name="PlayerNameLabelText" xml:space="preserve">
+		<value>玩家名稱</value>
+	</data>
+	<data name="PlayerNameHintText" xml:space="preserve">
+		<value>這是你在積分榜上顯示的名稱。</value>
+	</data>
+	<data name="ShareRoomButtonText" xml:space="preserve">
+		<value>分享房間鏈接</value>
+	</data>
+	<data name="CopyOverlayLinkButtonText" xml:space="preserve">
+		<value>複製OBS鏈接</value>
+	</data>
+</root>

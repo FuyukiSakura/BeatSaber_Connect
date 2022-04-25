@@ -1,9 +1,12 @@
-﻿@inject IJSRuntime _jsRuntime
+﻿@using Microsoft.Extensions.Localization
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@inject IJSRuntime _jsRuntime
+@inject IStringLocalizer<SharedResource> _localizer
 
 @if (_newVersionAvailable)
 {
     <button type="button" class="btn btn-warning shadow floating-update-button" onclick="window.location.reload()">
-        A new version of the application is available. Click here to reload.
+        @_localizer[nameof(SharedResource.UpdateAvailablePopupText)]
     </button>
 }
 

@@ -1,0 +1,103 @@
+﻿@page "/credits"
+@using Microsoft.Extensions.Localization
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@inject IStringLocalizer<SharedResource> _localizer
+
+<PageTitle>@_localizer[nameof(SharedResource.NavCreditText)] - @_localizer[nameof(SharedResource.AppTitle)]</PageTitle>
+<h3>@_localizer[nameof(SharedResource.NavCreditText)]</h3>
+<div class="row">
+    <div class="col-12">
+        <article>
+            <p>
+                @_localizer[nameof(SharedResource.SpecialThanksDescriptionText)]
+            </p>
+        </article>
+    </div>
+</div>
+<h4>@_localizer[nameof(SharedResource.CreditAlphaTesterText)]</h4>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/flamehaze1028-icon.png" alt="FlameHaze1028">
+            <div class="card-body">
+                <h5 class="card-title">FlameHaze1028</h5>
+                <p class="card-text">Welcome to my stream. I'm one of many Beat Saber streamers out there trying to have fun with VR and enjoy music.</p>
+                <a href="https://www.twitch.tv/flamehaze1028/" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://discord.gg/64vwjPKHjQ" target="_blank" class="btn btn-primary">Discord</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/halhal-icon.png" alt="HaLHaL">
+            <div class="card-body">
+                <h5 class="card-title">HaLHaL</h5>
+                <p class="card-text">不定期にゲームプレイ配信していこうと思います♪ 自由気ままに遊んでます☆ おしゃべり大好きなのでチャットでわいわいしましょ～！</p>
+                <a href="https://www.twitch.tv/HaLHaL_games/" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/nicol4489" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/zeroroka-icon.jpg" alt="ぜろろっか">
+            <div class="card-body">
+                <h5 class="card-title">ぜろろっか</h5>
+                <p class="card-text">主な配信はBeatSaber、なんだけど最近は頻度少なめ。他のゲームもやったりします。</p>
+                <a href="https://www.twitch.tv/zerorokka/" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/zerorokka" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/nekoyama-wanko-icon.jpg" alt="猫山わんこ">
+            <div class="card-body">
+                <h5 class="card-title">猫山わんこ</h5>
+                <p class="card-text">BeatSaberやってますヾ(⌒(ﾉ*•ω•*)ﾉ＜ビーセイ界の和み担当！ブログで自作セイバー公開してます</p>
+                <a href="https://www.twitch.tv/nekoyamawanko/" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/NekoyamaWanko" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/kai-shimotsuki-icon.jpg" alt="霜月珈唯">
+            <div class="card-body">
+                <h5 class="card-title">霜月珈唯</h5>
+                <p class="card-text">２０２１／８月ぐらいからビートセイバー始めました。気ままに暴れてます。ダイエット－１2Kg達成！</p>
+                <a href="https://www.twitch.tv/kai_shimotsuki/" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/KAI_SHIMOTSUKI" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/brlias_sakura_icon.png" alt="冬雪桜">
+            <div class="card-body">
+                <h5 class="card-title">冬雪桜</h5>
+                <p class="card-text">來自台灣的特色玩家 ^3^ 玩遊戲就是要快樂嘛~ 我希望可以將這些快樂分享給更多人！歡迎各位在直播時加入多人對戰哦┗|｀O′|┛</p>
+                <a href="https://www.twitch.tv/fuyukisakura" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/FuyukiSakura" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+</div>
+<h4>@_localizer[nameof(SharedResource.CreditSiteBuilderTitle)]</h4>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-xl-2">
+        <div class="card">
+            <img class="card-img-top" src="images/credits/brlias-icon.jpg" alt="ばらりあす">
+            <div class="card-body">
+                <h5 class="card-title">ばらりあす</h5>
+                <p class="card-text">英語の勉強を兼ねて配信しています。Stream games to study english.Someday I want to be able to speak English fluently.Teach me english！Play games: BeatSaber</p>
+                <a href="https://www.twitch.tv/brlias" target="_blank" class="btn btn-primary">Twitch</a>
+                <a href="https://twitter.com/BRLias" target="_blank" class="btn btn-info">Twitter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

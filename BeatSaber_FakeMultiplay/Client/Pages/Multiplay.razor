@@ -3,14 +3,19 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using System.Net.WebSockets
 @using System.Text.Json
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Lobby
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
 @using BeatSaber_FakeMultiplay.Client.Services
 @using BeatSaber_FakeMultiplay.Shared.Models.Event
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
+@using Microsoft.Extensions.Localization
 @inject NavigationManager _navigationManager
+@inject IStringLocalizer<LobbyResource> _localizer
+@inject IStringLocalizer<SharedResource> _sharedLocalizer
 @inject IJSRuntime _jsRuntime
 @implements IAsyncDisposable
 
-<PageTitle>Lobby</PageTitle>
+<PageTitle>@_sharedLocalizer[nameof(SharedResource.NavLobbyText)] - @_sharedLocalizer[nameof(SharedResource.AppTitle)]</PageTitle>
 
 @if (!string.IsNullOrWhiteSpace(_errorMessage))
 {
@@ -19,30 +24,31 @@
     </div>
 
     <div class="alert alert-info" role="alert">
-        FakeMultiplay requires <a href="https://github.com/opl-/beatsaber-http-status/releases">http-status</a>
-        or <a href="https://github.com/denpadokei/HttpSiraStatus/releases">HttpSiraStatus</a> to work.
+        @((MarkupString) string.Format(_localizer[nameof(LobbyResource.HttpStatusConnectionFailText)],
+            "<a href=\"https://github.com/opl-/beatsaber-http-status/releases\">http-status</a>",
+            "<a href=\"https://github.com/denpadokei/HttpSiraStatus/releases\">HttpSiraStatus</a>"))
     </div>
 }
 
 @if (string.IsNullOrWhiteSpace(RoomId))
 {
     <div class="form-group">
-        <label for="inputRoomName">Room name</label>
+        <label for="inputRoomName">@_localizer[nameof(LobbyResource.RoomNameLabelText)]</label>
         <input type="text" class="form-control" id="inputRoomName" placeholder="Choose a name" @bind="_preferredRoomId">
-        <small id="roomHelp" class="form-text text-muted">This the the ID of the room name you and your friends will join</small>
+        <small id="roomHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.RoomNameHintText)]</small>
     </div>
-    <button class="btn btn-secondary" @onclick="GoToRoom">Create / Join</button>
+    <button class="btn btn-secondary" @onclick="GoToRoom">@_localizer[nameof(LobbyResource.CreateRoomButtonText)]</button>
 }
 else
 {
     <div class="form-group">
-        <label for="inputDisplayName">Player name</label>
-        <input type="text" class="form-control" id="inputDisplayName" placeholder="Choose a name" @bind="_playerName">
-        <small id="playerNameHelp" class="form-text text-muted">This is how your name will appear on the scoreboard</small>
+        <label for="inputDisplayName">@_localizer[nameof(LobbyResource.PlayerNameLabelText)]</label>
+        <input type="text" class="form-control" id="inputDisplayName" placeholder="冬雪桜" @bind="_playerName">
+        <small id="playerNameHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.PlayerNameHintText)]</small>
     </div>
-    <button class="btn btn-primary" @onclick="Join" disabled="@(!IsConnected)">Join</button>
-    <button class="btn btn-secondary" @onclick="ShareRoom">Share Room</button>
-    <button class="btn btn-secondary" @onclick="CopyOverlayLink">OBS Overlay Link</button>
+    <button class="btn btn-primary" @onclick="Join" disabled="@(!IsConnected)">@_localizer[nameof(LobbyResource.JoinButtonText)]</button>
+    <button class="btn btn-secondary" @onclick="ShareRoom">@_localizer[nameof(LobbyResource.ShareRoomButtonText)]</button>
+    <button class="btn btn-secondary" @onclick="CopyOverlayLink">@_localizer[nameof(LobbyResource.CopyOverlayLinkButtonText)]</button>
 
     <hr>
 
@@ -92,7 +98,7 @@ else
 
         _hubConnection.On<string>(BsHubMessage.JoinRoom, (user) =>
         {
-            var encodedMsg = $"{user} has entered the room";
+            var encodedMsg = user + _localizer[LobbyResource.UserEnterRoomMessage];
             _messages.Add(encodedMsg);
             StateHasChanged();
         });
@@ -146,8 +152,8 @@ else
         }
         catch (WebSocketException ex)
         {
-            _errorMessage = "Beat Saber is not running.<br /><br />Debug: ";
-            _errorMessage += ex.Message;
+            _errorMessage = _localizer[nameof(LobbyResource.BeatSaberNotRunningMessage)];
+            _errorMessage += "<br /><br />Debug: " + ex.Message;
         }
     }
 

@@ -1,8 +1,12 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.Extensions.Localization
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@inject IStringLocalizer<SharedResource> _localizer
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">
             <img src="/images/brlias_sakura_icon_brand.png" width="30" height="30" class="d-inline-block align-top" alt="Brlias's Fan Art <3">
-            Sakura's Bi-Sei
+            @_localizer[nameof(SharedResource.AppTitle)]
         </a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -14,13 +18,13 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Welcome
+                <span class="oi oi-home" aria-hidden="true"></span> @_localizer[nameof(SharedResource.NavHomeText)]
             </NavLink>
             <NavLink class="nav-link" href="multiplay">
-                <span class="oi oi-chat" aria-hidden="true"></span> Multiplay
+                <span class="oi oi-chat" aria-hidden="true"></span> @_localizer[nameof(SharedResource.NavLobbyText)]
             </NavLink>
-            <NavLink class="nav-link" href="credit">
-                <span class="oi oi-heart" aria-hidden="true"></span> Credits
+            <NavLink class="nav-link" href="credits">
+                <span class="oi oi-heart" aria-hidden="true"></span> @_localizer[nameof(SharedResource.NavCreditText)]
             </NavLink>
         </div>
     </nav>

@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<InvariantGlobalization>false</InvariantGlobalization>
+	<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
@@ -11,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +22,57 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ResourceFiles\Index\IndexResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IndexResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ResourceFiles\Lobby\LobbyResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LobbyResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ResourceFiles\Shared\SharedResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SharedResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ResourceFiles\Index\IndexResource.ja.resx">
+      <DependentUpon>IndexResource.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Index\IndexResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Index\IndexResource.zh-tw.resx">
+      <DependentUpon>IndexResource.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Lobby\LobbyResource.ja.resx">
+      <DependentUpon>LobbyResource.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Lobby\LobbyResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LobbyResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Lobby\LobbyResource.zh-tw.resx">
+      <DependentUpon>LobbyResource.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Shared\SharedResource.ja.resx">
+      <DependentUpon>SharedResource.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Shared\SharedResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\Shared\SharedResource.zh-tw.resx">
+      <DependentUpon>SharedResource.resx</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
