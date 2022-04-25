@@ -44,4 +44,10 @@
 	<data name="CopyOverlayLinkButtonText" xml:space="preserve">
 		<value>オーバーレイ</value>
 	</data>
+	<data name="LobbyUrlLabelText" xml:space="preserve">
+		<value>部屋URL</value>
+	</data>
+	<data name="OverlayUrlLabelText" xml:space="preserve">
+		<value>オーバーレイ URL</value>
+	</data>
 </root>

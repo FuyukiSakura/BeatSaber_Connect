@@ -17,60 +17,97 @@
 
 <PageTitle>@_sharedLocalizer[nameof(SharedResource.NavLobbyText)] - @_sharedLocalizer[nameof(SharedResource.AppTitle)]</PageTitle>
 
-@if (!string.IsNullOrWhiteSpace(_errorMessage))
-{
-    <div class="alert alert-danger" role="alert">
-        @((MarkupString) _errorMessage)
-    </div>
+<div class="container">
 
-    <div class="alert alert-info" role="alert">
-        @((MarkupString) string.Format(_localizer[nameof(LobbyResource.HttpStatusConnectionFailText)],
-            "<a href=\"https://github.com/opl-/beatsaber-http-status/releases\">http-status</a>",
-            "<a href=\"https://github.com/denpadokei/HttpSiraStatus/releases\">HttpSiraStatus</a>"))
-    </div>
-}
+    @if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @((MarkupString) _errorMessage)
+        </div>
 
-@if (string.IsNullOrWhiteSpace(RoomId))
-{
-    <div class="form-group">
-        <label for="inputRoomName">@_localizer[nameof(LobbyResource.RoomNameLabelText)]</label>
-        <input type="text" class="form-control" id="inputRoomName" placeholder="Choose a name" @bind="_preferredRoomId">
-        <small id="roomHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.RoomNameHintText)]</small>
-    </div>
-    <button class="btn btn-secondary" @onclick="GoToRoom">@_localizer[nameof(LobbyResource.CreateRoomButtonText)]</button>
-}
-else
-{
-    <div class="form-group">
-        <label for="inputDisplayName">@_localizer[nameof(LobbyResource.PlayerNameLabelText)]</label>
-        <input type="text" class="form-control" id="inputDisplayName" placeholder="冬雪桜" @bind="_playerName">
-        <small id="playerNameHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.PlayerNameHintText)]</small>
-    </div>
-    <button class="btn btn-primary" @onclick="Join" disabled="@(!IsConnected)">@_localizer[nameof(LobbyResource.JoinButtonText)]</button>
-    <button class="btn btn-secondary" @onclick="ShareRoom">@_localizer[nameof(LobbyResource.ShareRoomButtonText)]</button>
-    <button class="btn btn-secondary" @onclick="CopyOverlayLink">@_localizer[nameof(LobbyResource.CopyOverlayLinkButtonText)]</button>
+        <div class="alert alert-info" role="alert">
+            @((MarkupString) string.Format(_localizer[nameof(LobbyResource.HttpStatusConnectionFailText)],
+                "<a href=\"https://github.com/opl-/beatsaber-http-status/releases\">http-status</a>",
+                "<a href=\"https://github.com/denpadokei/HttpSiraStatus/releases\">HttpSiraStatus</a>"))
+        </div>
+    }
 
-    <hr>
+    @if (string.IsNullOrWhiteSpace(RoomId))
+    {
+        <div class="form-group">
+            <label for="inputRoomName">@_localizer[nameof(LobbyResource.RoomNameLabelText)]</label>
+            <input type="text" class="form-control" id="inputRoomName" placeholder="Choose a name" @bind="_preferredRoomId">
+            <small id="roomHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.RoomNameHintText)]</small>
+        </div>
+        <button class="btn btn-secondary" @onclick="GoToRoom">@_localizer[nameof(LobbyResource.CreateRoomButtonText)]</button>
+    }
+    else
+    {
+        <!-- Connect to server -->
+        <div class="form-group">
+            <label for="inputDisplayName">@_localizer[nameof(LobbyResource.PlayerNameLabelText)]</label>
+            <input type="text" class="form-control" id="inputDisplayName" placeholder="冬雪桜" @bind="_playerName">
+            <small id="playerNameHelp" class="form-text text-muted">@_localizer[nameof(LobbyResource.PlayerNameHintText)]</small>
+        </div>
+        <button class="btn btn-primary mb-3" @onclick="Join" disabled="@(!IsConnected)">@_localizer[nameof(LobbyResource.JoinButtonText)]</button>
 
-    <ul id="messagesList">
-        @foreach (var message in _messages)
-        {
-            <li>@message</li>
-        }
-    </ul>
+        <!-- Lobby info -->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">@_localizer[nameof(LobbyResource.LobbyUrlLabelText)]</span>
+            </div>
+            <input type="text"
+                   class="form-control"
+                   aria-describedby="lobby-url"
+                   onfocus="this.select()"
+                   @bind="_roomUrl" readonly />
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" @onclick="ShareRoom">
+                    @_localizer[nameof(LobbyResource.ShareRoomButtonText)]
+                </button>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">@_localizer[nameof(LobbyResource.OverlayUrlLabelText)]</span>
+            </div>
+            <input type="text"
+                   class="form-control"
+                   aria-describedby="overlay-url"
+                   onfocus="this.select()"
+                   @bind="_overlayUrl" readonly />
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" @onclick="CopyOverlayLink">
+                    @_localizer[nameof(LobbyResource.CopyOverlayLinkButtonText)]
+                </button>
+            </div>
+        </div>
 
-    <hr>
+        <hr>
 
-    <ul id="scoreBoard">
-        @if (_leaderBoard != null)
-        {
-            foreach (var (playerName, gameStatus) in _leaderBoard)
+        <!-- Lobby messages -->
+        <ul id="messagesList">
+            @foreach (var message in _messages)
             {
-                <li>@playerName : @gameStatus.Score (@((gameStatus.RelativeScore * 100).ToString("0.00"))%) | (@gameStatus.Rank)</li>
+                <li>@message</li>
             }
-        }
-    </ul>
-}
+        </ul>
+
+        <hr>
+
+        <!-- Score display -->
+        <ul id="scoreBoard">
+            @if (_leaderBoard != null)
+            {
+                foreach (var (playerName, gameStatus) in _leaderBoard)
+                {
+                    <li>@playerName : @gameStatus.Score (@((gameStatus.RelativeScore * 100).ToString("0.00"))%) | (@gameStatus.Rank)</li>
+                }
+            }
+        </ul>
+    }
+
+</div>
 
 @code {
     [Parameter]
@@ -81,6 +118,9 @@ else
 
     private readonly List<string> _messages = new();
     private string _errorMessage = "";
+    private string _roomUrl = "";
+    private string _overlayUrl = "";
+
     private readonly Dictionary<string, Performance> _playerStatusList = new();
     private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
     private string _preferredRoomId = "";
@@ -106,6 +146,17 @@ else
         _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
 
         await _hubConnection.StartAsync();
+    }
+
+    ///
+    /// <inheritdoc />
+    ///
+    protected override void OnParametersSet()
+    {
+        _roomUrl = _navigationManager.Uri;
+        _overlayUrl = $"{_navigationManager.BaseUri}LeaderBoard/{RoomId}";
+
+        base.OnParametersSet();
     }
 
     /// <summary>
@@ -183,8 +234,7 @@ else
     /// <returns></returns>
     private async Task CopyOverlayLink()
     {
-        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText",
-            $"{_navigationManager.BaseUri}LeaderBoard/{RoomId}");
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _overlayUrl);
     }
 
     /// <summary>
@@ -193,8 +243,7 @@ else
     /// <returns></returns>
     private async Task ShareRoom()
     {
-        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText",
-            _navigationManager.Uri);
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _roomUrl);
     }
 
     /// <summary>

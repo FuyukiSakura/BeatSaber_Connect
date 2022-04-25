@@ -150,4 +150,10 @@
   <data name="CopyOverlayLinkButtonText" xml:space="preserve">
 	  <value>Copy Overlay Link</value>
   </data>
+  <data name="LobbyUrlLabelText" xml:space="preserve">
+	  <value>Lobby Link</value>
+  </data>
+  <data name="OverlayUrlLabelText" xml:space="preserve">
+	  <value>Overlay Link</value>
+  </data>
 </root>

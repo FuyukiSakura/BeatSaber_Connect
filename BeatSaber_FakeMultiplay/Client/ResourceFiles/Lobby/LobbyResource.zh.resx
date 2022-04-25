@@ -44,4 +44,10 @@
 	<data name="CopyOverlayLinkButtonText" xml:space="preserve">
 		<value>複製OBS鏈接</value>
 	</data>
+	<data name="LobbyUrlLabelText" xml:space="preserve">
+		<value>房間連結</value>
+	</data>
+	<data name="OverlayUrlLabelText" xml:space="preserve">
+		<value>積分榜顯示連結</value>
+	</data>
 </root>

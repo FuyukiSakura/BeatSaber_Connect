@@ -70,7 +70,7 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Lobby {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Copy Overlay Link.
         /// </summary>
         public static string CopyOverlayLinkButtonText {
             get {
@@ -102,6 +102,24 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Lobby {
         public static string JoinButtonText {
             get {
                 return ResourceManager.GetString("JoinButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lobby Link.
+        /// </summary>
+        public static string LobbyUrlLabelText {
+            get {
+                return ResourceManager.GetString("LobbyUrlLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OverlayUrlLabelText {
+            get {
+                return ResourceManager.GetString("OverlayUrlLabelText", resourceCulture);
             }
         }
         

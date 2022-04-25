@@ -104,24 +104,22 @@
 	<data name="HowToContentText" xml:space="preserve">
 		<value>Using the software is pretty straight forward. No special mod needs to be installed for FakeMultiplay.
 
+{0}
 1. Click on the "Multiplay" tab.
 2. Enter a room name.
 3. Click "Create/Join"
+*The room name is the only way to identify the connection. Please make sure it's not easily guessable.
 
-&lt;img src="/images/tutorial/en/create-room.jpg" alt="Create a new room" /&gt;
-The room name is the only way to identify the connection. Please make sure it's not easily guessable.
-
+{1}
 4. Type in your player name
 5. Click "Connect". 
 * Make sure you start Beat Saber first.
 
-&lt;img src="/images/tutorial/en/connect-to-room.jpg" alt="Connect Beat Saber to the room" /&gt;
 If the "has joined the game" message is shown. It works. Otherwise, it's not. Please refer to the warning message that appears in that case.
-
 6. Other players can join either using the "Share Room" link. Or by typing in the room name in the room creation screen.
-7. Use the "Copy Overlay Link" to get the link for "Browser Source" of your streaming software.
 
-&lt;img src="/images/tutorial/en/obs-browser-source.jpg" alt="OBS Overlay" /&gt;
+{2}
+7. Use the "Copy Overlay Link" to get the link for "Browser Source" of your streaming software.
 * The overlay can rescale gracefully with height/width adjustments in the browser source.
 
 8. Enjoy multiplaying without concerns of version, plugin borke and beat map desync, etc.</value>
