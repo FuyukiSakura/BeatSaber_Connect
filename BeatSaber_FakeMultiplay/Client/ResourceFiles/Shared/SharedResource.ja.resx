@@ -15,7 +15,7 @@
 		<value>歓迎</value>
 	</data>
 	<data name="NavLobbyText" xml:space="preserve">
-		<value>マルチプレー</value>
+		<value>通信対戦</value>
 	</data>
 	<data name="NavCreditText" xml:space="preserve">
 		<value>特別謝辞</value>

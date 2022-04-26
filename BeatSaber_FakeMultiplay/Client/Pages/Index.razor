@@ -9,36 +9,57 @@
 <PageTitle>@_sharedLocalizer[nameof(SharedResource.NavHomeText)] - @_sharedLocalizer[nameof(SharedResource.AppTitle)]</PageTitle>
 
 <div class="container">
-<h3>@_sharedLocalizer[nameof(SharedResource.NavHomeText)]</h3>
-<div class="row">
-    <div class="col-12">
-        <article>
-            <h4>@_localizer[nameof(IndexResource.BeforeStartTitleText)]</h4>
-            <div class="alert alert-info" role="alert">
-                @((MarkupString) _localizer[nameof(IndexResource.InstallationInfoText)].ToString())
-            </div>
-            <div class="alert alert-secondary" role="alert">
-                @((MarkupString)_localizer[nameof(IndexResource.BeforeStartContentText)].ToString())
-            </div>
-            <img src="/images/tutorial/en/installing-the-app.jpg"
-                 class="rounded img-thumbnail"
-                 alt="Install the app" />
+    <h3>@_sharedLocalizer[nameof(SharedResource.NavHomeText)]</h3>
+    <div class="row">
+        <div class="col-12">
+            <article>
+                <h4>@_localizer[nameof(IndexResource.BeforeStartTitleText)]</h4>
+                <div class="alert alert-info" role="alert">
+                    @((MarkupString)_localizer[nameof(IndexResource.InstallationInfoText)].ToString())
+                </div>
+                <div class="alert alert-secondary" role="alert">
+                    @((MarkupString)_localizer[nameof(IndexResource.BeforeStartContentText)].ToString())
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-6">
             <img src="/images/tutorial/en/app-installed.jpg"
                  class="rounded img-thumbnail"
-                 alt="After installation" />
-        </article>
+                 alt="After installation"/>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="/images/tutorial/en/installing-the-app.jpg"
+                 class="rounded img-thumbnail"
+                 alt="Install the app"/>
+        </div>
     </div>
-    <div class="col-12">
-        <article>
-            <h4>@_localizer[nameof(IndexResource.HowToTitleText)]</h4>
-            <pre>@((MarkupString) string.Format(_localizer[nameof(IndexResource.HowToContentText)],
-                     $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/create-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Create a new room\" />",
-                     $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/connect-to-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Connect Beat Saber to the room\" />",
-                     "<img src=\"/images/tutorial/en/obs-browser-source.jpg\" class=\"rounded img-thumbnail\" alt=\"OBS Overlay\" />"))</pre>
-        </article>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <img src="/images/overlay-1.png"
+                 class="rounded img-thumbnail"
+                 alt="Overlay single player"/>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="/images/overlay-2.png"
+                 class="rounded img-thumbnail"
+                 alt="Overlay multi-player"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <article>
+                <h4>@_localizer[nameof(IndexResource.HowToTitleText)]</h4>
+                <pre>@((MarkupString)string.Format(_localizer[nameof(IndexResource.HowToContentText)],
+                         $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/create-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Create a new room\" />",
+                         $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/connect-to-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Connect Beat Saber to the room\" />",
+                         "<img src=\"/images/tutorial/en/obs-browser-source.jpg\" class=\"rounded img-thumbnail\" alt=\"OBS Overlay\" />"))</pre>
+            </article>
+        </div>
     </div>
 </div>
-</div>
+
 @code {
 
 }

@@ -33,7 +33,7 @@
 		<value>この名前を持つ人は誰でもあなたの部屋に参加することができます。</value>
 	</data>
 	<data name="PlayerNameLabelText" xml:space="preserve">
-		<value>選手名</value>
+		<value>名前は？</value>
 	</data>
 	<data name="PlayerNameHintText" xml:space="preserve">
 		<value>スコアボードにはこのように名前が表示されます。</value>
