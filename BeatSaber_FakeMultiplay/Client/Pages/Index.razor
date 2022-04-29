@@ -51,7 +51,8 @@
         <div class="col-12">
             <article>
                 <h4>@_localizer[nameof(IndexResource.HowToTitleText)]</h4>
-                <pre>@((MarkupString)string.Format(_localizer[nameof(IndexResource.HowToContentText)],
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/L3bVOcuAjTQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <pre style="white-space: pre-wrap; word-break: keep-all;">@((MarkupString)string.Format(_localizer[nameof(IndexResource.HowToContentText)],
                          $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/create-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Create a new room\" />",
                          $"<img src=\"/images/tutorial/{CultureInfo.CurrentCulture.TwoLetterISOLanguageName}/connect-to-room.jpg\" class=\"rounded img-thumbnail\" alt=\"Connect Beat Saber to the room\" />",
                          "<img src=\"/images/tutorial/en/obs-browser-source.jpg\" class=\"rounded img-thumbnail\" alt=\"OBS Overlay\" />"))</pre>
