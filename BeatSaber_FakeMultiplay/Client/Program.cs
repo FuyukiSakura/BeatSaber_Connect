@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Globalization;
 using BeatSaber_FakeMultiplay.Client.Models;
+using BeatSaber_FakeMultiplay.Client.Services;
+using BeatSaber_FakeMultiplay.Client.Services.BeatSaber;
 using Microsoft.JSInterop;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -10,6 +12,11 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+builder.Services.AddSingleton<BeatSaberSocketResolver>()
+    .AddTransient<IBeatSaberSocket, DataPullerSocket>()
+    .AddTransient<IBeatSaberSocket, HttpStatusSocket>()
+;
 
 builder.Services.AddLocalization();
 

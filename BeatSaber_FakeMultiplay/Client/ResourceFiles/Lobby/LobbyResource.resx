@@ -124,7 +124,11 @@
 	  <value>Create / Join</value>
   </data>
   <data name="HttpStatusConnectionFailText" xml:space="preserve">
-	  <value>Multiplay requires {0} or {1} to work. &lt;br/&gt;&lt;br/&gt; * Apparently accuracy works with HttpSiraStatus only.</value>
+	  <value>Multiplay supports the following mods &lt;br/&gt;&lt;br/&gt;
+1. {0} (No accuracy) &lt;br/&gt;
+2. {1} &lt;br/&gt;
+3. {2} &lt;br/&gt;&lt;br/&gt;
+Please make sure at least one of them is installed.</value>
   </data>
   <data name="UserEnterRoomMessage" xml:space="preserve">
 	  <value> has entered the room.</value>

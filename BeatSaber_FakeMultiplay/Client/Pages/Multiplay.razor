@@ -1,14 +1,14 @@
 ﻿@page "/multiplay"
 @page "/multiplay/{RoomId}"
 @using Microsoft.AspNetCore.SignalR.Client
-@using System.Net.WebSockets
 @using System.Text.Json
 @using BeatSaber_FakeMultiplay.Client.ResourceFiles.Lobby
 @using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
-@using BeatSaber_FakeMultiplay.Client.Services
-@using BeatSaber_FakeMultiplay.Shared.Models.Event
+@using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
+@using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
 @using Microsoft.Extensions.Localization
+@inject BeatSaberSocketResolver _bsSocketResolver
 @inject NavigationManager _navigationManager
 @inject IStringLocalizer<LobbyResource> _localizer
 @inject IStringLocalizer<SharedResource> _sharedLocalizer
@@ -28,7 +28,8 @@
         <div class="alert alert-info" role="alert">
             @((MarkupString) string.Format(_localizer[nameof(LobbyResource.HttpStatusConnectionFailText)],
                 "<a href=\"https://github.com/opl-/beatsaber-http-status/releases\">http-status</a>",
-                "<a href=\"https://github.com/denpadokei/HttpSiraStatus/releases\">HttpSiraStatus</a>"))
+                "<a href=\"https://github.com/denpadokei/HttpSiraStatus/releases\">HttpSiraStatus</a>",
+                "<a href=\"https://github.com/ReadieFur/BSDataPuller/\">DataPuller</a>"))
         </div>
     }
 
@@ -101,7 +102,7 @@
             {
                 foreach (var (playerName, gameStatus) in _leaderBoard)
                 {
-                    <li>@playerName : @gameStatus.Score (@((gameStatus.RelativeScore * 100).ToString("0.00"))%) | (@gameStatus.Rank)</li>
+                    <li>@playerName : @gameStatus.Score (@(gameStatus.Accuracy.ToString("0.00"))%) | (@gameStatus.Rank)</li>
                 }
             }
         </ul>
@@ -114,15 +115,14 @@
     public string RoomId { get; set; } = "";
 
     private HubConnection? _hubConnection;
-    private readonly HttpStatusSocket _httpStatusSocket = new();
 
     private readonly List<string> _messages = new();
     private string _errorMessage = "";
     private string _roomUrl = "";
     private string _overlayUrl = "";
 
-    private readonly Dictionary<string, Performance> _playerStatusList = new();
-    private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
+    private readonly Dictionary<string, PlayerStats> _playerStatusList = new();
+    private IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
     private string _preferredRoomId = "";
     private string _playerName = "";
 
@@ -167,10 +167,10 @@
     /// <exception cref="NotImplementedException"></exception>
     void PlayerStatus_OnUpdated(string playerName, string httpStatusJson)
     {
-        var socketEvent = JsonSerializer.Deserialize<Performance>(httpStatusJson);
-        if (socketEvent == null) return; // Cannot determine result
+        var playerStats = JsonSerializer.Deserialize<PlayerStats>(httpStatusJson);
+        if (playerStats == null) return; // Cannot determine result
 
-        _playerStatusList[playerName] = socketEvent;
+        _playerStatusList[playerName] = playerStats;
         _leaderBoard = _playerStatusList.OrderByDescending(pair => pair.Value.Score);
         StateHasChanged();
     }
@@ -193,19 +193,19 @@
         if (_hubConnection is null) return; // WebSocket connection not established yet
         _errorMessage = ""; // Resets the error message
 
-        try
+        var bsSocket = await _bsSocketResolver.ResolveAsync();
+        if (bsSocket == null)
         {
-            _httpStatusSocket.Stop();
-            await _httpStatusSocket.StartAsync();
-            _httpStatusSocket.ScoreChanged += HttpStatusSocket_OnScoreChanged;
-            _httpStatusSocket.SongStart += HttpStatusSocket_OnSongStart;
-            await _hubConnection.SendAsync("JoinRoom", _playerName, RoomId);
-        }
-        catch (WebSocketException ex)
-        {
+            // None of the sockets supported can connect
             _errorMessage = _localizer[nameof(LobbyResource.BeatSaberNotRunningMessage)];
-            _errorMessage += "<br /><br />Debug: " + ex.Message;
+            return;
         }
+
+        bsSocket.Stop();
+        await bsSocket.StartAsync();
+        bsSocket.ScoreChanged += HttpStatusSocket_OnScoreChanged;
+        bsSocket.SongStart += HttpStatusSocket_OnSongStart;
+        await _hubConnection.SendAsync("JoinRoom", _playerName, RoomId);
     }
 
     /// <summary>
@@ -213,7 +213,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void HttpStatusSocket_OnScoreChanged(object? sender, Performance e)
+    async void HttpStatusSocket_OnScoreChanged(object? sender, PlayerStats e)
     {
         await _hubConnection!.SendAsync("ScoreUpdate", _playerName, RoomId, JsonSerializer.Serialize(e));
     }

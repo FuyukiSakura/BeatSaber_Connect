@@ -3,7 +3,7 @@
 @layout EmptyLayout
 @using Microsoft.AspNetCore.SignalR.Client
 @using System.Text.Json
-@using BeatSaber_FakeMultiplay.Shared.Models.Event
+@using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
 @inject NavigationManager _navigationManager
 @implements IAsyncDisposable
@@ -18,7 +18,7 @@
             <div class="card text-white sakura-mp mb-3">
                 <div class="card-header sakura-mp-player">@playerName</div>
                 <div class="card-body">
-                    <h5 class="card-title sakura-mp-acc">@gameStatus.Rank (@((gameStatus.RelativeScore * 100).ToString("0.00"))%)</h5>
+                    <h5 class="card-title sakura-mp-acc">@gameStatus.Rank (@(gameStatus.Accuracy.ToString("0.00"))%)</h5>
                     <p class="card-text sakura-mp-score">@($"{gameStatus.Score:#,0}")</p>
                 </div>
             </div>
@@ -31,8 +31,8 @@
     public string RoomId { get; set; } = "";
 
     private HubConnection? _hubConnection;
-    private readonly Dictionary<string, Performance> _playerStatusList = new();
-    private IOrderedEnumerable<KeyValuePair<string, Performance>>? _leaderBoard;
+    private readonly Dictionary<string, PlayerStats> _playerStatusList = new();
+    private IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
 
     ///
     /// <inheritdoc />
@@ -66,10 +66,10 @@
     /// <exception cref="NotImplementedException"></exception>
     void PlayerStatus_OnUpdated(string playerName, string httpStatusJson)
     {
-        var socketEvent = JsonSerializer.Deserialize<Performance>(httpStatusJson);
-        if (socketEvent == null) return; // Cannot determine result
+        var playerStats = JsonSerializer.Deserialize<PlayerStats>(httpStatusJson);
+        if (playerStats == null) return; // Cannot determine result
 
-        _playerStatusList[playerName] = socketEvent;
+        _playerStatusList[playerName] = playerStats;
         _leaderBoard = _playerStatusList.OrderByDescending(pair => pair.Value.Score);
         StateHasChanged();
     }

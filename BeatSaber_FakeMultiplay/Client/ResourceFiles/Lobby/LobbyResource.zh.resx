@@ -18,7 +18,11 @@
 		<value>連線</value>
 	</data>
 	<data name="HttpStatusConnectionFailText" xml:space="preserve">
-		<value>部屋連線需要使用 {0} 或 {1} 插件。</value>
+		<value>部屋連線支援一下插件 &lt;br/&gt;&lt;br/&gt;
+一。 {0} （沒有ACC）&lt;br/&gt;
+二。 {1} &lt;br/&gt;
+三。 {2} &lt;br/&gt;&lt;br/&gt;
+請最少安裝其中一個。</value>
 	</data>
 	<data name="UserEnterRoomMessage" xml:space="preserve">
 		<value>已經加入對戰。</value>
