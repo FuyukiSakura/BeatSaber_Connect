@@ -12,7 +12,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         /// <summary>
         /// Emits when a song has started
         /// </summary>
-        event EventHandler? SongStart;
+        event EventHandler<BeatMapInfo>? SongStart;
 
         /// <summary>
         /// Emits when a user has failed

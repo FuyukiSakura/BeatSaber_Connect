@@ -14,7 +14,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         const string LiveDataUrl = DataPullerUrl + "LiveData";
 
         public event EventHandler<PlayerStats>? ScoreChanged;
-        public event EventHandler? SongStart;
+        public event EventHandler<BeatMapInfo>? SongStart;
         public event EventHandler? Failed;
 
         WebSocket _mapDataWs = new (MapDataUrl);
@@ -46,9 +46,24 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
             var mapData = NullableJsonSerializer.Deserialize<MapData>(e);
             if (mapData == null) return; // Cannot parse result, ignore
 
+            var beatmapInfo = new BeatMapInfo
+            {
+                Artist = mapData.SongAuthor,
+                BPM = mapData.BPM,
+                BSR = mapData.BSRKey,
+                CoverImage = mapData.coverImage,
+                Difficulty = mapData.Difficulty,
+                CustomDifficulty = mapData.CustomDifficultyLabel,
+                Mapper = mapData.Mapper,
+                NJS = mapData.NJS,
+                PP = mapData.PP,
+                Star = mapData.Star,
+                SongSubName = mapData.SongSubName,
+                SongName = mapData.SongName
+            };
             if (mapData.InLevel)
             {
-                SongStart?.Invoke(this, EventArgs.Empty);
+                SongStart?.Invoke(this, beatmapInfo);
             }
 
             if (mapData.LevelFailed)
@@ -68,9 +83,13 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
             var liveData = NullableJsonSerializer.Deserialize<LiveData>(e);
             if (liveData == null) return; // Cannot parse result, ignore
 
-            var stats = new PlayerStats()
+            var stats = new PlayerStats
             {
+                Combo = liveData.Combo,
+                Energy = liveData.PlayerHealth,
+                Misses = liveData.Misses,
                 Score = liveData.Score,
+                TimeElapsed = liveData.TimeElapsed,
                 Accuracy = liveData.Accuracy,
                 Rank = liveData.Rank
             };

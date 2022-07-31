@@ -223,7 +223,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void HttpStatusSocket_OnSongStart(object? sender, EventArgs e)
+    async void HttpStatusSocket_OnSongStart(object? sender, BeatMapInfo e)
     {
         await _hubConnection!.SendAsync("SongStart", RoomId);
     }

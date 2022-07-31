@@ -1,5 +1,4 @@
-﻿using System.Net.WebSockets;
-using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
+﻿using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
 using BeatSaber_FakeMultiplay.Shared.Models.Event;
 
 namespace BeatSaber_FakeMultiplay.Client.Services
@@ -14,7 +13,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         WebSocket _httpStatusConnection = new (HttpStatusUrl);
 
         public event EventHandler<PlayerStats>? ScoreChanged;
-        public event EventHandler? SongStart;
+        public event EventHandler<BeatMapInfo>? SongStart;
         public event EventHandler? Failed;
 
         /// <summary>
@@ -65,7 +64,8 @@ namespace BeatSaber_FakeMultiplay.Client.Services
                     ScoreChanged?.Invoke(this, stats);
                     break;
                 case EventType.SongStart:
-                    SongStart?.Invoke(this, EventArgs.Empty);
+                    // TODO: Use real Beat Map Info
+                    SongStart?.Invoke(this, new BeatMapInfo());
                     break;
                 case EventType.Failed:
                     Failed?.Invoke(this, EventArgs.Empty);
