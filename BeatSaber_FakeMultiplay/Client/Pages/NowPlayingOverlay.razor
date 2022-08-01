@@ -169,6 +169,12 @@
     /// </summary>
     void ParseModifiers()
     {
+        if (string.IsNullOrEmpty(ModifiersQuery))
+        {
+            // Not modifier query is supplied, do nothing
+            return;
+        }
+
         var modifiers = ModifiersQuery.Split(",");
         foreach (var modifier in modifiers)
         {
