@@ -159,7 +159,7 @@
 }
 
 #label_group {
-    display: none;
+    display: inline-block;
 }
 
 #bpm_group {
@@ -250,12 +250,8 @@
     line-height: 41px;
 }
 
-#miss_group {
-    display: none;
-}
-
 #now_pp_group {
-    display: none;
+    display: block;
 }
 
 .scroll {
@@ -326,4 +322,78 @@
     100% {
         transform: translateX(-100%)
     }
+}
+
+/* RTL */
+#overlay.rtl {
+    direction: rtl;
+    right: 40px;
+}
+
+#title_group.rtl {
+    direction: ltr;
+}
+
+#subtitle_group.rtl {
+    direction: ltr;
+}
+
+#artist_mapper.rtl {
+    display: inline-block;
+    direction: ltr;
+}
+
+#artist_group.rtl {
+    direction: ltr;
+}
+
+#bpm_group.rtl {
+    direction: ltr;
+}
+
+#njs_group.rtl {
+    direction: ltr;
+}
+
+#pp_group.rtl {
+    direction: ltr;
+}
+
+#difficulty_group.rtl {
+    direction: ltr;
+}
+
+#score.rtl {
+    transform: translate(2px, 0);
+}
+
+#difficulty.rtl, #bpm.rtl {
+    direction: ltr;
+}
+
+#energy_bar.rtl {
+    float: left;
+}
+
+/* Top */
+#overlay.top {
+    top: 40px;
+}
+
+#performance.top {
+    order: 1;
+    flex-direction: column-reverse;
+}
+
+#overlay.hidden #beatmap.top, #overlay.hidden #performance.top > * {
+    transform: translate(0, -15px);
+}
+
+.energy_background.top {
+    margin: 10px 0 0 0;
+}
+
+/* Debug */
+.debug {
+    background: black;
 }

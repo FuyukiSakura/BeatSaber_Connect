@@ -1,43 +1,59 @@
 ﻿@page "/Stream/NowPlaying/Overlay"
 @using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
+@using BeatSaber_FakeMultiplay.Shared.Models.Reselim
 @layout EmptyLayout
 @inject BeatSaberSocketResolver _bsSocketResolver
 
-<PageTitle>Reselim Overlay - WASM hosted</PageTitle>
+<PageTitle>Reselim Overlay - WebAssembly hosted</PageTitle>
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
-<div id="overlay" class="">
-    <div id="performance">
-        <div class="performance_group" id="now_pp_group">
-            <span class="text" id="now_pp">@_beatMapInfo.PP</span>
-            <span class="subtext" id="now_pp_text">pp</span>
-        </div>
+@if (_mod.Scale)
+{
+    <link href="css/reselim/scale.css" rel="stylesheet"/>
+}
+
+<div id="overlay" class="@GroupClass()">
+    <div id="performance" class="@GroupClass()">
+        @if (_mod.All || _mod.PP)
+        {
+            <div class="performance_group" id="now_pp_group">
+                <span class="text" id="now_pp">@_beatMapInfo.PP</span>
+                <span class="subtext" id="now_pp_text">pp</span>
+            </div>
+        }
 
         <div class="performance_group">
             <span class="text" id="rank">@_stats.Rank</span>
             <span class="subtext" id="percentage">@_stats.Accuracy.ToString("F2")%</span>
         </div>
-
-        <div class="performance_group" id="miss_group">
-            <span class="text" id="miss">@_stats.Misses</span>
-            <span class="subtext">Miss</span>
-        </div>
+        
+        @if (_mod.All || _mod.Miss)
+        {
+            <div class="performance_group" id="miss_group">
+                <span class="text" id="miss">@_stats.Misses</span>
+                <span class="subtext">Miss</span>
+            </div>
+        }
 
         <div class="performance_group">
             <span class="text" id="combo">@_stats.Combo</span>
             <span class="subtext">Combo</span>
         </div>
-				
-        <span id="score">@_stats.Score</span>
 
-        <div class="energy_container" id="energy_area">
-            <div class="energy_background" id="energy_group">
-                <div class="energy" id="energy_bar" style="width:@_stats.Energy%"></div>
+        <span id="score" class="@GroupClass()">@_stats.Score</span>
+        @if (_mod.All || _mod.Energy)
+        {
+            <div class="energy_container" id="energy_area">
+                <div class="energy_background @GroupClass()" id="energy_group">
+                    <div class="energy @GroupClass()"
+                         id="energy_bar"
+                         style="width: @_stats.Energy%"></div>
+                </div>
             </div>
-        </div>
+        }
     </div>
 
-    <div id="beatmap">
+    <div id="beatmap" class="@GroupClass()">
         <div id="cover_group">
             <div id="cover">
                 <img id="image" src="@_beatMapInfo.CoverImage">
@@ -61,51 +77,60 @@
             <div id="text">
                 <div id="title_subtitle">
                     <div id="titles">
-                        <div id="title_group">
+                        <div id="title_group" class="@GroupClass()">
                             <span id="title">@_beatMapInfo.SongName</span>
                         </div>
                         <div id="title_subtitle_space"></div>
-                        <div id="subtitle_group">
+                        <div id="subtitle_group" class="@GroupClass()">
                             <span id="subtitle">@_beatMapInfo.SongSubName</span>
                         </div>
                     </div>
                 </div>
 
                 <div id="artist_mapper_group">
-                    <div id="artist_mapper">
-                        <div id="artist_group">
+                    <div id="artist_mapper" class="@GroupClass()">
+                        <div id="artist_group" class="@GroupClass()">
                             <span id="artist">@_beatMapInfo.Artist</span><span id="mapper_header"> [</span><span id="mapper">@_beatMapInfo.Mapper</span><span id="mapper_footer">]</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div>
-                <span id="bsr_group">
-                    <span id="bsr_text">bsr </span><span id="bsr">@_beatMapInfo.BSR</span>
-                </span>
-                <span id="pp_group">
-                    <span id="star_text">★</span><span id="star">@_beatMapInfo.Star</span>
-                    <span id="pp">@_beatMapInfo.PP</span><span id="pp_text">pp</span>
-                </span>
+                @if (_mod.All || _mod.Bsr)
+                {
+                    <span id="bsr_group">
+                        <span id="bsr_text">bsr </span><span id="bsr">@_beatMapInfo.BSR</span>
+                    </span>
+                }
+                @if (_mod.All || _mod.PP)
+                {
+                    <span id="pp_group" class="@GroupClass()">
+                        <span id="star_text">★</span><span id="star">@_beatMapInfo.Star</span>
+                        <span id="pp">@_beatMapInfo.PP</span><span id="pp_text">pp</span>
+                    </span>
+                }
             </div>
             <div id="map_info_group">
                 <div id="map_info">
-                    <span id="difficulty_group">
+                    <span id="difficulty_group" class="@GroupClass()">
                         <span id="difficulty_label">
                             <span id="difficulty">
                                 @(_beatMapInfo.Difficulty == "ExpertPlus" ? "Expert+" : _beatMapInfo.Difficulty)
                             </span>
-                            <span id="label_group">
-                                <span id="label_header">(</span>
-                                <span id="label">@_beatMapInfo.CustomDifficulty</span>
-                                <span id="label_footer">)</span>
-                            </span>
+                            @if (_mod.All || _mod.Label)
+                            {
+                                <span id="label_group">
+                                    <span id="label_header">(</span>
+                                    <span id="label">@_beatMapInfo.CustomDifficulty</span>
+                                    <span id="label_footer">)</span>
+                                </span>
+                            }
                         </span>
                     </span>
-                    <span id="bpm_group">
+                    <span id="bpm_group" class="@GroupClass()">
                         <span id="bpm">@_beatMapInfo.BPM</span><span id="bpm_text"> BPM</span>
                     </span>
-                    <span id="njs_group">
+                    <span id="njs_group" class="@GroupClass()">
                         <span id="njs">@_beatMapInfo.NJS</span><span id="njs_text"> NJS</span>
                     </span>
                     <span id="mod_group">
@@ -121,12 +146,37 @@
     PlayerStats _stats = new ();
     BeatMapInfo _beatMapInfo = new();
 
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "modifiers")]
+    public string ModifiersQuery { get; set; } = "";
+
+    /// <summary>
+    /// Gets or sets if all data should display
+    /// </summary>
+    readonly ReselimModifiers _mod = new ();
+
     ///
     /// <inheritdoc />
     ///
     protected override async Task OnInitializedAsync()
     {
+        ParseModifiers();
         await ConnectSocket();
+    }
+
+    /// <summary>
+    /// Sets the modifiers based on the query string supplied by the user
+    /// </summary>
+    void ParseModifiers()
+    {
+        var modifiers = ModifiersQuery.Split(",");
+        foreach (var modifier in modifiers)
+        {
+            var fieldName = char.ToUpper(modifier[0]) + modifier[1..];
+            _mod.GetType()
+                .GetProperty(fieldName)?
+                .SetValue(_mod, true);
+        }
     }
 
     /// <summary>
@@ -174,5 +224,29 @@
     {
         _stats = e;
         StateHasChanged();
+    }
+
+    /// <summary>
+    /// Gets custom class string according to modifier query
+    /// </summary>
+    /// <returns></returns>
+    string GroupClass()
+    {
+        var classString = "";
+        if (_mod.Test)
+        {
+            classString += "debug ";
+        }
+
+        if (_mod.Rtl)
+        {
+            classString += "rtl ";
+        }
+
+        if (_mod.Top)
+        {
+            classString += "top ";
+        }
+        return classString;
     }
 }
