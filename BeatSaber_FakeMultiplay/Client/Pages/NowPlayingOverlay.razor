@@ -1,4 +1,4 @@
-﻿@page "/Stream/NowPlaying/Overlay"
+﻿@page "/stream/now-playing/overlay"
 @using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.Reselim
@@ -40,7 +40,7 @@
             <span class="subtext">Combo</span>
         </div>
 
-        <span id="score" class="@GroupClass()">@_stats.Score</span>
+        <span id="score" class="@GroupClass()">@($"{_stats.Score:#,0}")</span>
         @if (_mod.All || _mod.Energy)
         {
             <div class="energy_container" id="energy_area">
@@ -56,8 +56,15 @@
     <div id="beatmap" class="@GroupClass()">
         <div id="cover_group">
             <div id="cover">
-                <img id="image" src="@_beatMapInfo.CoverImage">
-						
+                @if (string.IsNullOrWhiteSpace(_beatMapInfo.CoverImage))
+                {
+                    <img id="image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+                }
+                else
+                {
+                    <img id="image" src="@_beatMapInfo.CoverImage">
+                }
+
                 <svg width="90" height="90">
                     <rect width="90" height="90" id="darken"></rect>
                     <circle cx="45" cy="45" r="30" id="remaining"></circle>
@@ -202,9 +209,9 @@
             }
 
             bsSocket.Stop();
-            await bsSocket.StartAsync();
             bsSocket.ScoreChanged += SocketOnScoreChanged;
             bsSocket.SongStart += SocketOnSongStart;
+            await bsSocket.StartAsync();
             break;
         }
     }

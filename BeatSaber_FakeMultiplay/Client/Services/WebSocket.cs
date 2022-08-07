@@ -33,12 +33,27 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         {
             // Cancel existing request
             _cancellationSource.Cancel();
+            _cancellationSource = new CancellationTokenSource();
 
             _ws = new ClientWebSocket();
-            await _ws.ConnectAsync(new Uri(_socketUri), CancellationToken.None);
+            await _ws.ConnectAsync(new Uri(_socketUri), _cancellationSource.Token);
 
-            _cancellationSource = new CancellationTokenSource();
             _ = ListenAsync();
+            _ = KeepAliveAsync();
+        }
+
+        /// <summary>
+        /// Keeps pinging the server to keep the connection alive
+        /// </summary>
+        /// <returns></returns>
+        async Task KeepAliveAsync()
+        {
+            while (!_cancellationSource.IsCancellationRequested)
+            {
+                var buffer = Encoding.ASCII.GetBytes("ping");
+                await _ws.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                await Task.Delay (5000);
+            }
         }
 
         /// <summary>

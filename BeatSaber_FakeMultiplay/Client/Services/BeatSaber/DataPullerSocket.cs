@@ -17,22 +17,27 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         public event EventHandler<BeatMapInfo>? SongStart;
         public event EventHandler? Failed;
 
-        WebSocket _mapDataWs = new (MapDataUrl);
-        WebSocket _liveDataWs = new (LiveDataUrl);
+        readonly WebSocket _mapDataWs = new (MapDataUrl);
+        readonly WebSocket _liveDataWs = new (LiveDataUrl);
+
+        /// <summary>
+        /// Creates a new instance of <see cref="DataPullerSocket" />
+        /// </summary>
+        public DataPullerSocket()
+        {
+            _mapDataWs.MessageReceived += MapDataWsOnMessageReceived;
+            _mapDataWs.Closed += WebSocket_OnClosed;
+
+            _liveDataWs.MessageReceived += LiveDataWs_OnMessageReceived;
+            _liveDataWs.Closed += WebSocket_OnClosed;
+        }
 
         ///
         /// <inheritdoc />
         ///
         public async Task StartAsync()
         {
-            _mapDataWs = new WebSocket(MapDataUrl);
-            _mapDataWs.MessageReceived += MapDataWsOnMessageReceived;
-            _mapDataWs.Closed += WebSocket_OnClosed;
             await _mapDataWs.ConnectAsync();
-
-            _liveDataWs = new WebSocket(LiveDataUrl);
-            _liveDataWs.MessageReceived += LiveDataWs_OnMessageReceived;
-            _liveDataWs.Closed += WebSocket_OnClosed;
             await _liveDataWs.ConnectAsync();
         }
 
