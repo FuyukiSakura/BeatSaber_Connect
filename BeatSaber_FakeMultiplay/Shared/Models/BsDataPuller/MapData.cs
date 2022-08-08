@@ -37,7 +37,7 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BsDataPuller
         public float Star { get; set; } = 0f;
         public bool IsMultiplayer { get; set; }
         public int PreviousRecord { get; set; } = 0;
-        public int? PreviousBSR { get; set; }
+        public string PreviousBSR { get; set; }
         public long unixTimestamp { get; set; }
     }
 

@@ -1,6 +1,12 @@
 ﻿/* Affects the whole layout */
 .sakura-mp {
-    background-color: rgba(108, 117, 125, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Affects the player name display */
+.sakura-mp-rank {
+    font-size: 1.6em;
+    padding-right: 5px;
 }
 
 /* Affects the player name display */
@@ -10,11 +16,14 @@
 
 /* Affects the player name display */
 .sakura-mp-acc {
+    padding: 5px 10px;
     font-size: 1.5em;
+    float: right;
 }
 
 /* Affects the player name display */
 .sakura-mp-score {
-    font-size: 2em;
+    font-size: 1.9em;
     color: antiquewhite;
+    float: right;
 }

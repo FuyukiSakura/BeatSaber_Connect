@@ -154,7 +154,7 @@
     protected override void OnParametersSet()
     {
         _roomUrl = _navigationManager.Uri;
-        _overlayUrl = $"{_navigationManager.BaseUri}LeaderBoard/{RoomId}";
+        _overlayUrl = $"{_navigationManager.BaseUri}leader-board/{RoomId}";
 
         base.OnParametersSet();
     }
@@ -203,29 +203,7 @@
 
         bsSocket.Stop();
         await bsSocket.StartAsync();
-        bsSocket.ScoreChanged += HttpStatusSocket_OnScoreChanged;
-        bsSocket.SongStart += HttpStatusSocket_OnSongStart;
         await _hubConnection.SendAsync("JoinRoom", _playerName, RoomId);
-    }
-
-    /// <summary>
-    /// Handles http-status on song start event
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    async void HttpStatusSocket_OnScoreChanged(object? sender, PlayerStats e)
-    {
-        await _hubConnection!.SendAsync("ScoreUpdate", _playerName, RoomId, JsonSerializer.Serialize(e));
-    }
-
-    /// <summary>
-    /// Handles http-status on score changed event
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    async void HttpStatusSocket_OnSongStart(object? sender, BeatMapInfo e)
-    {
-        await _hubConnection!.SendAsync("SongStart", RoomId);
     }
 
     /// <summary>
@@ -234,7 +212,7 @@
     /// <returns></returns>
     private async Task CopyOverlayLink()
     {
-        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", _overlayUrl);
+        await _jsRuntime.InvokeVoidAsync("clipboardCopy.copyText", $"{_overlayUrl}/?playerName={_playerName}");
     }
 
     /// <summary>

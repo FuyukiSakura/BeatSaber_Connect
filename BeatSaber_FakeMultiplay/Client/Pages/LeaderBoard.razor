@@ -1,10 +1,12 @@
-﻿@page "/LeaderBoard"
-@page "/LeaderBoard/{RoomId}"
+﻿@page "/leader-board"
+@page "/leader-board/{RoomId}"
 @layout EmptyLayout
 @using Microsoft.AspNetCore.SignalR.Client
 @using System.Text.Json
+@using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
+@inject BeatSaberSocketResolver _bsSocketResolver
 @inject NavigationManager _navigationManager
 @implements IAsyncDisposable
 
@@ -13,16 +15,23 @@
 <div id="scoreBoard">
     @if (_leaderBoard != null)
     {
-        foreach (var (playerName, gameStatus) in _leaderBoard)
-        {
-            <div class="card text-white sakura-mp mb-3">
-                <div class="card-header sakura-mp-player">@playerName</div>
-                <div class="card-body">
-                    <h5 class="card-title sakura-mp-acc">@gameStatus.Rank (@(gameStatus.Accuracy.ToString("0.00"))%)</h5>
-                    <p class="card-text sakura-mp-score">@($"{gameStatus.Score:#,0}")</p>
-                </div>
+        <div class="card text-white sakura-mp mb-3" style="max-width: 500px">
+            <div class="card-header sakura-mp-player">@_beatMapInfo.SongName</div>
+            <div class="card-body">                
+                <ul class="list-group list-group-flush">
+                    <li style="display: none">@(_rank = 1)</li>
+                    @foreach (var (playerName, gameStatus) in _leaderBoard)
+                    {
+                        <li style="display: block">
+                            <span class="sakura-mp-rank">#@(_rank++)  </span>
+                            <span class="sakura-mp-player">@playerName</span>
+                            <span class="sakura-mp-score">@($"{gameStatus.Score:#,0}")</span>
+                            <span class="sakura-mp-acc">@gameStatus.Rank (@(gameStatus.Accuracy.ToString("0.00"))%)</span>
+                        </li>
+                    }
+                </ul>
             </div>
-        }
+        </div>
     }
 </div>
 
@@ -30,7 +39,13 @@
     [Parameter]
     public string RoomId { get; set; } = "";
 
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "playerName")]
+    public string PlayerName { get; set; } = "";
+
     private HubConnection? _hubConnection;
+    private BeatMapInfo _beatMapInfo = new ();
+    private int _rank = 1;
     private readonly Dictionary<string, PlayerStats> _playerStatusList = new();
     private IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
 
@@ -43,19 +58,75 @@
             .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
             .Build();
 
-        _hubConnection.On(BsHubMessage.SongStart, Lobby_OnSongStart);
+        _hubConnection.Closed += HubConnectionOnClosed;
         _hubConnection.On<string, string>(BsHubMessage.ScoreUpdate, PlayerStatus_OnUpdated);
 
         await _hubConnection.StartAsync();
+
         await _hubConnection.SendAsync("Subscribe", RoomId);
+        _ = Join(_hubConnection);
     }
 
     /// <summary>
-    /// Handles lobby song start event
+    /// Tries to reconnect when the connection is closed
     /// </summary>
-    void Lobby_OnSongStart()
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    async Task HubConnectionOnClosed(Exception? arg)
     {
+        while (_hubConnection!.State != HubConnectionState.Connected)
+        {
+            await _hubConnection.StartAsync();
+            await Task.Delay(2000);
+        }
+    }
+
+    /// <summary>
+    /// Joins user to the room and starts sending score
+    /// </summary>
+    /// <returns></returns>
+    private async Task Join(HubConnection connection)
+    {
+        while (true)
+        {
+            var bsSocket = await _bsSocketResolver.ResolveAsync();
+            if (bsSocket == null)
+            {
+                // None of the sockets supported can connect
+                await Task.Delay(5000);
+                continue;
+            }
+
+            bsSocket.Stop();
+            await bsSocket.StartAsync();
+            bsSocket.ScoreChanged += BsSocket_OnScoreChanged;
+            bsSocket.SongStart += BsSocket_OnSongStart;
+
+            await connection.SendAsync("JoinRoom", PlayerName, RoomId);
+            break;
+        }
+    }
+
+    /// <summary>
+    /// Handles http-status on song start event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    async void BsSocket_OnScoreChanged(object? sender, PlayerStats e)
+    {
+        await _hubConnection!.SendAsync("ScoreUpdate", PlayerName, RoomId, JsonSerializer.Serialize(e));
+    }
+
+    /// <summary>
+    /// Handles http-status on score changed event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    void BsSocket_OnSongStart(object? sender, BeatMapInfo e)
+    {
+        _beatMapInfo = e;
         _playerStatusList.Clear();
+        StateHasChanged();
     }
 
     /// <summary>

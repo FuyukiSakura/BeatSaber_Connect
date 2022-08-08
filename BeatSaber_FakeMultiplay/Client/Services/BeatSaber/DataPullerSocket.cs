@@ -13,6 +13,8 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         const string MapDataUrl = DataPullerUrl + "MapData";
         const string LiveDataUrl = DataPullerUrl + "LiveData";
 
+        bool _previousInLevel;
+        bool _userStopped;
         public event EventHandler<PlayerStats>? ScoreChanged;
         public event EventHandler<BeatMapInfo>? SongStart;
         public event EventHandler? Failed;
@@ -37,6 +39,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         ///
         public async Task StartAsync()
         {
+            _userStopped = false;
             await _mapDataWs.ConnectAsync();
             await _liveDataWs.ConnectAsync();
         }
@@ -66,10 +69,12 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 SongSubName = mapData.SongSubName,
                 SongName = mapData.SongName
             };
-            if (mapData.InLevel)
+
+            if (mapData.InLevel && _previousInLevel == false)
             {
                 SongStart?.Invoke(this, beatmapInfo);
             }
+            _previousInLevel = mapData.InLevel;
 
             if (mapData.LevelFailed)
             {
@@ -108,6 +113,12 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// <param name="e"></param>
         async void WebSocket_OnClosed(object? sender, string? e)
         {
+            if (_userStopped)
+            {
+                // Do not reconnect if it's triggered by stop function
+                return;
+            }
+
             var ws = (WebSocket) sender!;
             await ws.ReconnectAsync();
         }
@@ -117,6 +128,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         ///
         public void Stop()
         {
+            _userStopped = true;
             _mapDataWs.Close();
             _liveDataWs.Close();
         }
