@@ -18,13 +18,13 @@
     {
         <div class="card text-white sakura-mp mb-3" style="max-width: 500px">
             <div class="card-header sakura-mp-player">@_beatMapInfo.SongName</div>
-            <div class="card-body">                
+            <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li style="display: none">@(_rank = 1)</li>
                     @foreach (var (playerName, gameStatus) in _leaderBoard)
                     {
                         <li style="display: block">
-                            <span class="sakura-mp-rank">#@(_rank++)  </span>
+                            <span class="sakura-mp-rank">#@(_rank++)</span>
                             <span class="sakura-mp-player">@playerName</span>
                             <span class="sakura-mp-score">@($"{gameStatus.Score:#,0}")</span>
                             <span class="sakura-mp-acc">@gameStatus.Rank (@(gameStatus.Accuracy.ToString("0.00"))%)</span>
@@ -44,8 +44,17 @@
     [SupplyParameterFromQuery(Name = "playerName")]
     public string PlayerName { get; set; } = "";
 
+    /// <summary>
+    /// Gets or sets the refresh rate of the leader board
+    /// </summary>
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "interval")]
+    public int? Interval { get; set; }
+
     HubConnection? _hubConnection;
     BeatMapInfo _beatMapInfo = new ();
+    PlayerStats _previousStats = new();
+    PlayerStats _currentStats = new();
     int _rank = 1;
     readonly Dictionary<string, PlayerStats> _playerStatusList = new();
     IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
@@ -99,12 +108,33 @@
             }
 
             bsSocket.Stop();
-            await bsSocket.StartAsync();
             bsSocket.ScoreChanged += BsSocket_OnScoreChanged;
             bsSocket.SongStart += BsSocket_OnSongStart;
 
             await connection.SendAsync("JoinRoom", PlayerName, RoomId);
+            await bsSocket.StartAsync();
+            _ = StartSendScoreAsync();
             break;
+        }
+    }
+
+    /// <summary>
+    /// Looks for score changes and send to the sever when detected
+    /// </summary>
+    /// <returns></returns>
+    async Task StartSendScoreAsync()
+    {
+        while (true)
+        {
+            await Task.Delay(Interval.GetValueOrDefault(300));
+            if (_currentStats == _previousStats)
+            {
+                // No change, do not send
+                continue;
+            }
+
+            await _hubConnection!.SendAsync("ScoreUpdate", PlayerName, RoomId, JsonSerializer.Serialize(_currentStats));
+            _previousStats = _currentStats;
         }
     }
 
@@ -115,7 +145,7 @@
     /// <param name="e"></param>
     async void BsSocket_OnScoreChanged(object? sender, PlayerStats e)
     {
-        await _hubConnection!.SendAsync("ScoreUpdate", PlayerName, RoomId, JsonSerializer.Serialize(e));
+        _currentStats = e;
     }
 
     /// <summary>
