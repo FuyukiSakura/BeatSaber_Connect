@@ -44,11 +44,11 @@
     [SupplyParameterFromQuery(Name = "playerName")]
     public string PlayerName { get; set; } = "";
 
-    private HubConnection? _hubConnection;
-    private BeatMapInfo _beatMapInfo = new ();
-    private int _rank = 1;
-    private readonly Dictionary<string, PlayerStats> _playerStatusList = new();
-    private IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
+    HubConnection? _hubConnection;
+    BeatMapInfo _beatMapInfo = new ();
+    int _rank = 1;
+    readonly Dictionary<string, PlayerStats> _playerStatusList = new();
+    IOrderedEnumerable<KeyValuePair<string, PlayerStats>>? _leaderBoard;
 
     ///
     /// <inheritdoc />
@@ -86,7 +86,7 @@
     /// Joins user to the room and starts sending score
     /// </summary>
     /// <returns></returns>
-    private async Task Join(HubConnection connection)
+    async Task Join(HubConnection connection)
     {
         while (true)
         {
