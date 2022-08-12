@@ -1,11 +1,11 @@
 using BeatSaber_FakeMultiplay.Client;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using System.Globalization;
 using BeatSaber_FakeMultiplay.Client.Models;
 using BeatSaber_FakeMultiplay.Client.Services;
 using BeatSaber_FakeMultiplay.Client.Services.BeatSaber;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

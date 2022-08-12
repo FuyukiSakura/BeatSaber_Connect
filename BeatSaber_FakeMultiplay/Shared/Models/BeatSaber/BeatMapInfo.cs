@@ -56,7 +56,7 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
         /// Gets or sets the start difficulty of the beat map
         /// </summary>
         public float Star { get; set; } = 0f;
-        
+
         /// <summary>
         /// Gets or sets the song name of the beat map
         /// </summary>

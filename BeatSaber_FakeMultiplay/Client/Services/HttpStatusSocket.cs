@@ -1,4 +1,5 @@
-﻿using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
+﻿using BeatSaber_FakeMultiplay.Client.Services.BeatSaber;
+using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
 using BeatSaber_FakeMultiplay.Shared.Models.Event;
 
 namespace BeatSaber_FakeMultiplay.Client.Services
@@ -14,6 +15,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
 
         public event EventHandler<PlayerStats>? ScoreChanged;
         public event EventHandler<BeatMapInfo>? SongStart;
+        public event EventHandler<SongQuitEventArgs>? SongQuit;
         public event EventHandler? Failed;
 
         /// <summary>

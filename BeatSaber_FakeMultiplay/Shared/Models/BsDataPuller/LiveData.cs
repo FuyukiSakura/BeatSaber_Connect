@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BeatSaber_FakeMultiplay.Shared.Models.BsDataPuller
+﻿namespace BeatSaber_FakeMultiplay.Shared.Models.BsDataPuller
 {
     /// <summary>
     /// Represents the current player stats from data puller

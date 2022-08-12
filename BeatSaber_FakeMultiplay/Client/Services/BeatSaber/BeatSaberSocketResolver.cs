@@ -7,7 +7,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
     /// </summary>
     public class BeatSaberSocketResolver
     {
-        readonly IEnumerable<IBeatSaberSocket> _sockets;
+        public readonly IEnumerable<IBeatSaberSocket> Sockets;
 
         /// <summary>
         /// Creates a new instance of <see cref="BeatSaberSocketResolver"/>
@@ -15,7 +15,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// <param name="sockets"></param>
         public BeatSaberSocketResolver(IEnumerable<IBeatSaberSocket> sockets)
         {
-            _sockets = sockets;
+            Sockets = sockets;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// <returns></returns>
         public async Task<IBeatSaberSocket?> ResolveAsync()
         {
-            foreach (var socket in _sockets)
+            foreach (var socket in Sockets)
             {
                 try
                 {

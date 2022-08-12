@@ -14,9 +14,9 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         const string LiveDataUrl = DataPullerUrl + "LiveData";
 
         bool _previousInLevel;
-        bool _userStopped;
         public event EventHandler<PlayerStats>? ScoreChanged;
         public event EventHandler<BeatMapInfo>? SongStart;
+        public event EventHandler<SongQuitEventArgs>? SongQuit;
         public event EventHandler? Failed;
 
         readonly WebSocket _mapDataWs = new (MapDataUrl);
@@ -39,7 +39,6 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         ///
         public async Task StartAsync()
         {
-            _userStopped = false;
             await _mapDataWs.ConnectAsync();
             await _liveDataWs.ConnectAsync();
         }
@@ -70,16 +69,54 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 SongName = mapData.SongName
             };
 
-            if (mapData.InLevel && _previousInLevel == false)
-            {
-                SongStart?.Invoke(this, beatmapInfo);
-            }
-            _previousInLevel = mapData.InLevel;
-
+            InvokeSongStartStop(mapData, beatmapInfo);
             if (mapData.LevelFailed)
             {
                 Failed?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        /// <summary>
+        /// Checks if a user enters/quits a level and invoke the corresponding
+        /// <see cref="SongStart"/> or <see cref="SongQuit"/> events
+        /// </summary>
+        /// <param name="inLevel"></param>
+        /// <param name="beatmapInfo"></param>
+        void InvokeSongStartStop(MapData mapData, BeatMapInfo beatmapInfo)
+        {
+            if (mapData.InLevel == _previousInLevel)
+            {
+                // In level status not changed, indicates a song is not entered or quit
+                return;
+            }
+
+            if (mapData.InLevel)
+            {
+                SongStart?.Invoke(this, beatmapInfo);
+            }
+            else
+            {
+                SongQuit?.Invoke(this, new SongQuitEventArgs
+                {
+                    BeatMapInfo = beatmapInfo,
+                    Scene = GetQuitStatus(mapData)
+                });
+            }
+
+            _previousInLevel = mapData.InLevel;
+        }
+
+        /// <summary>
+        /// Gets the quit status of the map from map data
+        /// </summary>
+        /// <param name="mapData"></param>
+        /// <returns></returns>
+        static string GetQuitStatus(MapData mapData)
+        {
+            return mapData.LevelFailed ? QuitStatus.Fail // When NF is off
+                : mapData.LevelFinished ?
+                    mapData.LevelFailed ? QuitStatus.Fail // When NF is on and user failed
+                        : QuitStatus.Finish : "";
         }
 
         /// <summary>
@@ -113,12 +150,6 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// <param name="e"></param>
         async void WebSocket_OnClosed(object? sender, string? e)
         {
-            if (_userStopped)
-            {
-                // Do not reconnect if it's triggered by stop function
-                return;
-            }
-
             var ws = (WebSocket) sender!;
             await ws.ReconnectAsync();
         }
@@ -128,7 +159,6 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         ///
         public void Stop()
         {
-            _userStopped = true;
             _mapDataWs.Close();
             _liveDataWs.Close();
         }

@@ -105,15 +105,18 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         /// <returns></returns>
         public async Task ReconnectAsync()
         {
-            try
+            while (!_cancellationSource.IsCancellationRequested)
             {
-                await ConnectAsync();
-            }
-            catch (WebSocketException)
-            {
-                // Try reconnects every second
-                await Task.Delay(1000);
-                await ReconnectAsync();
+                try
+                {
+                    await ConnectAsync();
+                    break;
+                }
+                catch (WebSocketException)
+                {
+                    // Try reconnects every 2 seconds
+                    await Task.Delay(2000);
+                }
             }
         }
 

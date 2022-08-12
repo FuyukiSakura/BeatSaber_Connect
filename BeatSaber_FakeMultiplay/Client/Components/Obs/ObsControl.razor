@@ -1,0 +1,77 @@
+﻿@using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
+@using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
+@inject BeatSaberSocketResolver BsSocketResolver
+@inject IJSRuntime JS
+
+<div class="warning">@_warningText</div>
+
+@code {
+    string _warningText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!(await IsRunningInObsAsync()))
+        {
+            _warningText = "Not running in OBS Studio";
+        }
+    }
+
+    ///
+    /// <inheritdoc />
+    ///
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (await IsRunningInObsAsync())
+        {
+            await LoadObsControlAsync();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    /// <summary>
+    /// Checks if the control is run in OBS Studio
+    /// </summary>
+    async Task<bool> IsRunningInObsAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("obsstudio.getControlLevel");
+        }
+        catch (JSException)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Checks if the control is run in OBS Studio
+    /// </summary>
+    async Task LoadObsControlAsync()
+    {
+        foreach (var socket in BsSocketResolver.Sockets)
+        {
+            socket.SongStart += SocketOnSongStart;
+            socket.SongQuit += SocketOnSongQuit;
+        }
+        await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./Components/Obs/ObsControl.razor.js");
+    }
+
+    /// <summary>
+    /// Starts scene change when song starts
+    /// </summary>
+    async void SocketOnSongStart(object? sender, BeatMapInfo e)
+    {
+        await JS.InvokeVoidAsync("obs_start_scene_change");
+    }
+
+    /// <summary>
+    /// tarts scene change when song ends
+    /// </summary>
+    async void SocketOnSongQuit(object? sender, SongQuitEventArgs e)
+    {
+        await JS.InvokeAsync<string>("obs_end_scene_change",
+            new { e.Scene, Duration = 3 });
+    }
+}

@@ -2,10 +2,13 @@
 @using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.Reselim
+@using BeatSaber_FakeMultiplay.Client.Components.Obs
 @layout EmptyLayout
+@inject IJSRuntime JS
 @inject BeatSaberSocketResolver _bsSocketResolver
 
 <PageTitle>Reselim Overlay - WebAssembly hosted</PageTitle>
+<ObsControl />
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
 @if (_mod.Scale)
 {
@@ -168,6 +171,7 @@
     protected override async Task OnInitializedAsync()
     {
         ParseModifiers();
+
         await ConnectSocket();
     }
 
@@ -208,10 +212,8 @@
                 continue;
             }
 
-            bsSocket.Stop();
             bsSocket.ScoreChanged += SocketOnScoreChanged;
             bsSocket.SongStart += SocketOnSongStart;
-            await bsSocket.StartAsync();
             break;
         }
     }

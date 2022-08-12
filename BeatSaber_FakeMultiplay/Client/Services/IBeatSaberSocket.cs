@@ -1,4 +1,5 @@
-﻿using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
+﻿using BeatSaber_FakeMultiplay.Client.Services.BeatSaber;
+using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber;
 
 namespace BeatSaber_FakeMultiplay.Client.Services
 {
@@ -13,6 +14,11 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         /// Emits when a song has started
         /// </summary>
         event EventHandler<BeatMapInfo>? SongStart;
+
+        /// <summary>
+        /// Emits when a song has finished
+        /// </summary>
+        event EventHandler<SongQuitEventArgs>? SongQuit;
 
         /// <summary>
         /// Emits when a user has failed
