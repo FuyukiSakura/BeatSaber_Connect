@@ -2,9 +2,18 @@ using BeatSaber_FakeMultiplay.Server.Hubs;
 using BeatSaber_FakeMultiplay.Shared.Models.Socket;
 using Microsoft.AspNetCore.ResponseCompression;
 
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowSpecificOrigins,
+        policy  =>
+        {
+            policy.WithOrigins("https://beatsaver.com/");
+        });
+});
 
 builder.Services.AddSignalR(conf =>
 {
@@ -39,6 +48,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors(myAllowSpecificOrigins);
 
 app.MapRazorPages();
 app.MapControllers();
