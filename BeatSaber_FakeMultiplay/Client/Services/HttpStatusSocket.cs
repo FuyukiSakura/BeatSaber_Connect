@@ -11,12 +11,13 @@ namespace BeatSaber_FakeMultiplay.Client.Services
     {
         const string HttpStatusUrl = "ws://127.0.0.1:6557/socket";
 
-        WebSocket _httpStatusConnection = new (HttpStatusUrl);
+        WebSocket _httpStatusConnection = new(HttpStatusUrl);
 
         public event EventHandler<PlayerStats>? ScoreChanged;
         public event EventHandler<BeatMapInfo>? SongStart;
         public event EventHandler<BeatMapInfo>? SongUpdate;
         public event EventHandler<SongQuitEventArgs>? SongQuit;
+        public event EventHandler? Missed;
         public event EventHandler? Failed;
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         {
             var socketEvent = HttpStatusJson.Serialize(e);
             if (socketEvent == null) return; // Cannot parse result, listen for next event
-                
+
             switch (socketEvent.Event)
             {
                 case EventType.Hello:

@@ -26,6 +26,11 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         event EventHandler<SongQuitEventArgs>? SongQuit;
 
         /// <summary>
+        /// Emits when a note is missed
+        /// </summary>
+        event EventHandler? Missed;
+
+        /// <summary>
         /// Emits when a user has failed
         /// </summary>
         event EventHandler? Failed;
