@@ -17,6 +17,11 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         public event EventHandler<string?>? Closed;
 
         /// <summary>
+        /// Gets the connected status of the socket
+        /// </summary>
+        public bool IsConnected { get; private set; }
+
+        /// <summary>
         /// Creates a new instance of <see cref="WebSocket"/>
         /// </summary>
         /// <param name="uri"></param>
@@ -38,6 +43,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
             _ws = new ClientWebSocket();
             await _ws.ConnectAsync(new Uri(_socketUri), _cancellationSource.Token);
 
+            IsConnected = true;
             _ = ListenAsync();
             _ = KeepAliveAsync();
         }
@@ -54,6 +60,18 @@ namespace BeatSaber_FakeMultiplay.Client.Services
                 await _ws.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
                 await Task.Delay (5000);
             }
+        }
+
+        /// <summary>
+        /// Sends text to the socket
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public async Task SendTextAsync(string text)
+        {
+            var encoded = Encoding.UTF8.GetBytes(text);
+            var buffer = new ArraySegment<byte>(encoded, 0, encoded.Length);
+            await _ws.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
         /// <summary>
@@ -125,6 +143,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         /// </summary>
         public void Close()
         {
+            IsConnected = false;
             _cancellationSource.Cancel();
         }
     }
