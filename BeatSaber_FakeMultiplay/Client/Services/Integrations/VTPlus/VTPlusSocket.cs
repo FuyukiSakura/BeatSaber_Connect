@@ -10,6 +10,8 @@ namespace BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
     /// </remarks>
     public class VTPlusSocket
     {
+        bool _isBlue;
+
         readonly WebSocket _ws = new ("ws://127.0.0.1:4430/vtplus");
         readonly BeatSaberSocketResolver _bsSocketResolver;
 
@@ -60,7 +62,8 @@ namespace BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
         /// <param name="e"></param>
         async void BsSocket_OnMissed(object? sender, EventArgs e)
         {
-            await _ws.SendTextAsync("VTP_Throw:1:0:-1:2");
+            _isBlue = !_isBlue;
+            await _ws.SendTextAsync($"VTP_Throw:1:8:{(_isBlue?0:1)}:2");
         }
     }
 }
