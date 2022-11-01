@@ -50,7 +50,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
             {
                 await _ws.ConnectAsync();
             }
-            await _ws.SendTextAsync("VTP_Throw:10:0:-1:2");
+            BsSocket_OnMissed(this, EventArgs.Empty);
         }
 
         /// <summary>
