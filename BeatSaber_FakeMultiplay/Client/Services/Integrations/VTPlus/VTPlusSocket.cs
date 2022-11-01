@@ -41,13 +41,26 @@ namespace BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
         }
 
         /// <summary>
+        /// Tests throw items
+        /// </summary>
+        /// <returns></returns>
+        public async Task TestAsync()
+        {
+            if (!_ws.IsConnected)
+            {
+                await _ws.ConnectAsync();
+            }
+            await _ws.SendTextAsync("VTP_Throw:10:0:-1:2");
+        }
+
+        /// <summary>
         /// Handles a missed event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         async void BsSocket_OnMissed(object? sender, EventArgs e)
         {
-            await _ws.SendTextAsync("VTP_Throw:1:-1:2:2");
+            await _ws.SendTextAsync("VTP_Throw:1:0:-1:2");
         }
     }
 }
