@@ -6,6 +6,7 @@
 @using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
 @using BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 @using BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
+@using BeatSaber_FakeMultiplay.Shared.Models.Hosting
 @using BeatSaber_FakeMultiplay.Shared.Models.Socket
 @using Microsoft.Extensions.Localization
 @inject BeatSaberSocketResolver _bsSocketResolver
@@ -132,7 +133,7 @@
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(_navigationManager.ToAbsoluteUri(SocketUri.Lobby))
+            .WithUrl(Uris.Hub + SocketUri.Lobby)
             .WithAutomaticReconnect()             
             .Build();
 

@@ -11,6 +11,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: myAllowSpecificOrigins,
         policy  =>
         {
+            policy.WithOrigins("https://bi-sei.sakura.live/");
             policy.WithOrigins("https://beatsaver.com/");
         });
 });

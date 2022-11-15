@@ -11,7 +11,11 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+#if DEBUG
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+#else
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://bs-multiplay.azurewebsites.net") });
+#endif
 
 builder.Services.AddSingleton<BeatSaberSocketResolver>()
     .AddTransient<IBeatSaberSocket, DataPullerSocket>()
