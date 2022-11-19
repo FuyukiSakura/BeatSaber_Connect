@@ -33,15 +33,15 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-aARYxDy2+8pfARhPrVejV9in2JF8xBbRVGocfz6nv9I=",
+      "hash": "sha256-D49U2dh6Aix8NsYy2yrO6X0DYaamYQJcjtIBvDdfq+I=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-WYZd3IiFUEVKFQzFmomImuGWFMKOCnsEFf\/YKIcpDaU=",
+      "hash": "sha256-dRPSgbDYUSqml1Mz69BBdV9ZMXbThRHbCdMcOIkJD8g=",
       "url": "_framework\/BeatSaber_FakeMultiplay.Client.dll"
     },
     {
-      "hash": "sha256-HDBmEg0cCpq1KP+ghmbd9i8NVbGJFYCSD1F+GLYCji8=",
+      "hash": "sha256-zGWyO2y2SxeonxW6nEjCw5QPRzNDk4Tml8Jqso8ypz0=",
       "url": "_framework\/BeatSaber_FakeMultiplay.Shared.dll"
     },
     {
@@ -453,5 +453,5 @@
       "url": "BeatSaber_FakeMultiplay.Client.styles.css"
     }
   ],
-  "version": "PKKIgveC"
+  "version": "Dr8\/Llo3"
 };

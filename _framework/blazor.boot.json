@@ -7,8 +7,8 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BeatSaber_FakeMultiplay.Client.dll": "sha256-WYZd3IiFUEVKFQzFmomImuGWFMKOCnsEFf\/YKIcpDaU=",
-      "BeatSaber_FakeMultiplay.Shared.dll": "sha256-HDBmEg0cCpq1KP+ghmbd9i8NVbGJFYCSD1F+GLYCji8=",
+      "BeatSaber_FakeMultiplay.Client.dll": "sha256-dRPSgbDYUSqml1Mz69BBdV9ZMXbThRHbCdMcOIkJD8g=",
+      "BeatSaber_FakeMultiplay.Shared.dll": "sha256-zGWyO2y2SxeonxW6nEjCw5QPRzNDk4Tml8Jqso8ypz0=",
       "Microsoft.AspNetCore.Components.dll": "sha256-\/scWuUFROwsCduWxUDfamDMPSiqbZ4Jn+bVgx+wt+Fs=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-lLeAAdXYR99eecPiAQOdsoHhleI8Ws+b2Jh\/3KOESAE=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-Fr\/FTDSi7G\/uUiuPhz0WXfFPngkdYQ8M+kFZdoUSrmg=",
