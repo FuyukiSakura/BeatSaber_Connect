@@ -7,6 +7,11 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
     /// </summary>
     public class BeatSaberSocketResolver
     {
+        /// <summary>
+        /// Gets or sets the successfully resolved socket
+        /// </summary>
+        IBeatSaberSocket? _beatSaberSocket;
+
         public readonly IEnumerable<IBeatSaberSocket> Sockets;
 
         /// <summary>
@@ -24,11 +29,17 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// <returns></returns>
         public async Task<IBeatSaberSocket?> ResolveAsync()
         {
+            if (_beatSaberSocket != null)
+            {
+                return _beatSaberSocket;
+            }
+
             foreach (var socket in Sockets)
             {
                 try
                 {
                     await socket.StartAsync();
+                    _beatSaberSocket = socket;
                     return socket;
                 }
                 catch (WebSocketException)

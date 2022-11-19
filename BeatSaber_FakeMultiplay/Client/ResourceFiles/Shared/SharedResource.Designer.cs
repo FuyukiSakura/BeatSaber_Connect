@@ -70,7 +70,7 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sakura Beat Saber.
+        ///   Looks up a localized string similar to Sakura&apos;s Lounge.
         /// </summary>
         public static string AppTitle {
             get {
@@ -88,7 +88,7 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Artist.
         /// </summary>
         public static string CreditSiteBuilderTitle {
             get {
@@ -115,6 +115,15 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Integrations.
+        /// </summary>
+        public static string NavIntegrationsText {
+            get {
+                return ResourceManager.GetString("NavIntegrationsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiplay.
         /// </summary>
         public static string NavLobbyText {
@@ -129,6 +138,15 @@ namespace BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared {
         public static string SpecialThanksDescriptionText {
             get {
                 return ResourceManager.GetString("SpecialThanksDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StartButtonText {
+            get {
+                return ResourceManager.GetString("StartButtonText", resourceCulture);
             }
         }
         

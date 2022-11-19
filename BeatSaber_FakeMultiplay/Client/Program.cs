@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using System.Globalization;
+using BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +21,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddSingleton<BeatSaberSocketResolver>()
     .AddTransient<IBeatSaberSocket, DataPullerSocket>()
     .AddTransient<IBeatSaberSocket, HttpStatusSocket>()
+    .AddTransient<VTPlusSocket>()
 ;
 
 builder.Services.AddLocalization();
