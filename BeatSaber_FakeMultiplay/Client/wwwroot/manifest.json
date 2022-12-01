@@ -1,6 +1,6 @@
 {
-  "name": "Sakura Beat Saber Lounge",
-  "short_name": "Sakura Bi-Sei",
+  "name": "Beat Saber Connect",
+  "short_name": "Bi-Sei Connect",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
