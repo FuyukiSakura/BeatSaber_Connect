@@ -213,7 +213,8 @@
             }
 
             bsSocket.ScoreChanged += SocketOnScoreChanged;
-            bsSocket.SongStart += SocketOnSongStart;
+            bsSocket.SongUpdate += SocketOnSongUpdate;
+            bsSocket.SongStart += SocketOnSongUpdate;
             break;
         }
     }
@@ -223,7 +224,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void SocketOnSongStart(object? sender, BeatMapInfo e)
+    void SocketOnSongUpdate(object? sender, BeatMapInfo e)
     {
         _beatMapInfo = e;
         StateHasChanged();

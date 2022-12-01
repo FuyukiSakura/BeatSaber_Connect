@@ -16,6 +16,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         bool _previousInLevel;
         public event EventHandler<PlayerStats>? ScoreChanged;
         public event EventHandler<BeatMapInfo>? SongStart;
+        public event EventHandler<BeatMapInfo>? SongUpdate;
         public event EventHandler<SongQuitEventArgs>? SongQuit;
         public event EventHandler? Failed;
 
@@ -80,13 +81,14 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         /// Checks if a user enters/quits a level and invoke the corresponding
         /// <see cref="SongStart"/> or <see cref="SongQuit"/> events
         /// </summary>
-        /// <param name="inLevel"></param>
-        /// <param name="beatmapInfo"></param>
+        /// <param name="mapData">The original map data received from DataPuller</param>
+        /// <param name="beatmapInfo">The converted map data for bs connect</param>
         void InvokeSongStartStop(MapData mapData, BeatMapInfo beatmapInfo)
         {
             if (mapData.InLevel == _previousInLevel)
             {
                 // In level status not changed, indicates a song is not entered or quit
+                SongUpdate?.Invoke(this, beatmapInfo);
                 return;
             }
 
