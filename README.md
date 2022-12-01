@@ -16,7 +16,7 @@ A Beat Saber socket connection tool
 
 ## Initial contributors
 
-- [Fuyuki Sakura] (https://github.com/FuyukiSakura)
+- 冬雪桜 - [Fuyuki Sakura](https://sakura.live)
 
 ## License
 
