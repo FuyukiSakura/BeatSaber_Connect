@@ -33,11 +33,11 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-Lwm\/kAYSd91fwfqCIRw\/3Am5hpj+uabXMkonVEJhZE0=",
+      "hash": "sha256-KiMAVNdAO2K\/annjAO0mmBuvBa13bm859278yn8T2ms=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-6BHAfiMnfQXCHUYaCicCd+\/aBT7p8G\/Lt2BCnxj7UcE=",
+      "hash": "sha256-sQ2twsxXVhZVuyPy+4wWm14kUrAlgAVXTZgwVRngkcI=",
       "url": "_framework\/BeatSaber_FakeMultiplay.Client.dll"
     },
     {
@@ -453,5 +453,5 @@
       "url": "BeatSaber_FakeMultiplay.Client.styles.css"
     }
   ],
-  "version": "mOG4HocK"
+  "version": "462l+Jrb"
 };
