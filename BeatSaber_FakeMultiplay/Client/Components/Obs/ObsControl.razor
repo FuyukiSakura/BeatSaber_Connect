@@ -49,13 +49,13 @@
     /// </summary>
     async Task LoadObsControlAsync()
     {
+        await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./Components/Obs/ObsControl.razor.js");
         foreach (var socket in BsSocketResolver.Sockets)
         {
             socket.SongStart += SocketOnSongStart;
             socket.SongQuit += SocketOnSongQuit;
         }
-        await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./Components/Obs/ObsControl.razor.js");
     }
 
     /// <summary>
