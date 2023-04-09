@@ -122,9 +122,12 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void BsSocket_OnSongStart(object? sender, BeatMapInfo e)
+    void BsSocket_OnSongStart(object? sender, BeatMapInfo? e)
     {
-        _beatMapInfo = e;
+        if (e != null)
+        {
+            _beatMapInfo = e;
+        }
         _playerStatusList.Clear();
         StateHasChanged();
     }

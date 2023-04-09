@@ -224,9 +224,13 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void SocketOnSongUpdate(object? sender, BeatMapInfo e)
+    void SocketOnSongUpdate(object? sender, BeatMapInfo? e)
     {
-        _beatMapInfo = e;
+        if (e != null)
+        {
+            // BS+ overlay can return null on song start
+            _beatMapInfo = e;
+        }
         StateHasChanged();
     }
 

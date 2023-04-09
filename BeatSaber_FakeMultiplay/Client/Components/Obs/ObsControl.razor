@@ -61,13 +61,13 @@
     /// <summary>
     /// Starts scene change when song starts
     /// </summary>
-    async void SocketOnSongStart(object? sender, BeatMapInfo e)
+    async void SocketOnSongStart(object? sender, BeatMapInfo? e)
     {
         await JS.InvokeVoidAsync("obs_start_scene_change");
     }
 
     /// <summary>
-    /// tarts scene change when song ends
+    /// starts scene change when song ends
     /// </summary>
     async void SocketOnSongQuit(object? sender, SongQuitEventArgs e)
     {

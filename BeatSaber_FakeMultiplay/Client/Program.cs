@@ -18,6 +18,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 #endif
 
 builder.Services.AddSingleton<BeatSaberSocketResolver>()
+    .AddTransient<IBeatSaberSocket, BsPlusSocket>()
     .AddTransient<IBeatSaberSocket, DataPullerSocket>()
     .AddTransient<IBeatSaberSocket, HttpStatusSocket>()
 ;
