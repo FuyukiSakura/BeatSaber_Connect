@@ -85,11 +85,32 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                         Misses = msg.ScoreEvent.MissCount,
                         TimeElapsed = (int) msg.ScoreEvent.Time,
                         Score = msg.ScoreEvent.Score,
-                        Accuracy = msg.ScoreEvent.Accuracy * 100
+                        Accuracy = msg.ScoreEvent.Accuracy * 100,
+                        Rank = AccuracyToRank(msg.ScoreEvent.Accuracy),
                     };
                     ScoreChanged?.Invoke(this, stats);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Converts accuracy to rank
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <returns></returns>
+        static string AccuracyToRank(float acc)
+        {
+            return acc switch
+            {
+                >= 1 => "SSS",
+                >= .95f => "SS",
+                >= .9f => "S",
+                >= .8f => "A",
+                >= .7f => "B",
+                >= .6f => "C",
+                >= .5f => "D",
+                _ => "E"
+            };
         }
 
         /// <summary>
