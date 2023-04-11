@@ -38,7 +38,6 @@ namespace BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
             }
 
             bsSocket.Missed += BsSocket_OnMissed;
-            await bsSocket.StartAsync();
             await _ws.ConnectAsync();
         }
 
