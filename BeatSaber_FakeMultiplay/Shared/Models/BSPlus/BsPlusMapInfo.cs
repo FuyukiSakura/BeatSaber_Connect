@@ -47,11 +47,13 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BSPlus
         /// <summary>
         /// The BPM of the song
         /// </summary>
+        [JsonPropertyName("BPM")]
         public float BPM { get; set; } = 0f;
 
         /// <summary>
         /// The performance point of this map
         /// </summary>
+        [JsonPropertyName("PP")]
         public float PP { get; set; } = 0f;
 
         /// <summary>
