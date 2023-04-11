@@ -89,6 +89,12 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                         Rank = AccuracyToRank(msg.ScoreEvent.Accuracy),
                     };
                     ScoreChanged?.Invoke(this, stats);
+                    if (!_failed 
+                        && msg.ScoreEvent.CurrentHealth <= 0)
+                    {
+                        _failed = true; 
+                        Failed?.Invoke(this, EventArgs.Empty);
+                    }
                     break;
             }
         }
