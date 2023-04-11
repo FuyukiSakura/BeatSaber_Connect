@@ -81,7 +81,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                     var stats = new PlayerStats
                     {
                         Combo = msg.ScoreEvent.Combo,
-                        Energy = msg.ScoreEvent.CurrentHealth,
+                        Energy = msg.ScoreEvent.CurrentHealth * 100,
                         Misses = msg.ScoreEvent.MissCount,
                         TimeElapsed = (int) msg.ScoreEvent.Time,
                         Score = msg.ScoreEvent.Score,
