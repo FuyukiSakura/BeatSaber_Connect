@@ -13,7 +13,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         /// <summary>
         /// Emits when a song has started
         /// </summary>
-        event EventHandler<BeatMapInfo>? SongStart;
+        event EventHandler<BeatMapInfo?>? SongStart;
 
         /// <summary>
         /// Emits when a song info is updated during game play
