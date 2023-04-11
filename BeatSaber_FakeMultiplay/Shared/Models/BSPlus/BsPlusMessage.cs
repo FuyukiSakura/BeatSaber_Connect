@@ -7,7 +7,7 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BSPlus
     /// <summary>
     /// Represents BS+ overlay json structure options
     /// </summary>
-    public class BsPlusMessage
+    public static class BsPlusMessage
     {
         /// <summary>
         /// Gets the default SerializerOptions
