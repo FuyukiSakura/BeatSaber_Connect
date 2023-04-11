@@ -14,7 +14,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services
         WebSocket _httpStatusConnection = new(HttpStatusUrl);
 
         public event EventHandler<PlayerStats>? ScoreChanged;
-        public event EventHandler<BeatMapInfo>? SongStart;
+        public event EventHandler<BeatMapInfo?>? SongStart;
         public event EventHandler<BeatMapInfo>? SongUpdate;
         public event EventHandler<SongQuitEventArgs>? SongQuit;
         public event EventHandler? Missed;
