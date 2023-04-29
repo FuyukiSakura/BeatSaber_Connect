@@ -41,4 +41,10 @@
 	<data name="CreditSiteBuilderTitle" xml:space="preserve">
 		<value>絵師</value>
 	</data>
+	<data name="NavIntegrationsText" xml:space="preserve">
+		<value>統合</value>
+	</data>
+	<data name="StartButtonText" xml:space="preserve">
+		<value>開始</value>
+	</data>
 </root>

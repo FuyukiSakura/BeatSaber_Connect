@@ -1,0 +1,41 @@
+﻿@page "/integrations"
+@using BeatSaber_FakeMultiplay.Client.Services.Integrations.VTPlus
+@using BeatSaber_FakeMultiplay.Client.ResourceFiles.Shared
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+@inject VTPlusSocket VtpSocket
+<h3>Integrations</h3>
+
+<p>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#vtplus" aria-expanded="false" aria-controls="vtplus">
+        VTube Plus
+    </button>
+</p>
+<div class="collapse" id="vtplus">
+    <div class="card card-body">
+        Configs coming
+        <button class="btn btn-primary mb-3" @onclick="StartVtpAsync" disabled="@(IsConnected)">@Localizer[nameof(SharedResource.StartButtonText)]</button>
+        <button class="btn btn-primary mb-3" @onclick="TestVtpAsync">Test</button>
+    </div>
+</div>
+
+@code {
+    public bool IsConnected { get; set; }
+
+    /// <summary>
+    /// Start <see cref="VTPlusSocket"/>
+    /// </summary>
+    public async Task StartVtpAsync()
+    {
+        IsConnected = true;
+        await VtpSocket.StartAsync();
+    }
+
+    /// <summary>
+    /// Test throw to VTPlus
+    /// </summary>
+    public async Task TestVtpAsync()
+    {
+        await VtpSocket.TestAsync();
+    }
+}

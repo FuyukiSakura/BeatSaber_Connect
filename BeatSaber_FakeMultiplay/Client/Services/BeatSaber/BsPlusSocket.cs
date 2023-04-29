@@ -9,6 +9,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
     public class BsPlusSocket : IBeatSaberSocket
     {
         bool _previousInLevel;
+        int _previousMisses;
         bool _failed;
 
         const string Url = "ws://localhost:2947/socket";
@@ -20,6 +21,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         public event EventHandler<BeatMapInfo?>? SongStart;
         public event EventHandler<BeatMapInfo>? SongUpdate;
         public event EventHandler<SongQuitEventArgs>? SongQuit;
+        public event EventHandler? Missed;
         public event EventHandler? Failed;
 
         /// <summary>
@@ -95,6 +97,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                         _failed = true; 
                         Failed?.Invoke(this, EventArgs.Empty);
                     }
+                    CheckMiss(msg.ScoreEvent.MissCount);
                     break;
             }
         }
@@ -117,6 +120,19 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 >= .5f => "D",
                 _ => "E"
             };
+        }
+
+        /// <summary>
+        /// Checks if a user missed a note and invoke the <see cref="Missed"/> event
+        /// </summary>
+        /// <param name="misses"></param>
+        void CheckMiss(int misses)
+        {
+            if (misses > _previousMisses)
+            {
+                Missed?.Invoke(this, EventArgs.Empty);
+                _previousMisses = misses;
+            }
         }
 
         /// <summary>

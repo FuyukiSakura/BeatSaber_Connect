@@ -14,10 +14,12 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
         const string LiveDataUrl = DataPullerUrl + "LiveData";
 
         bool _previousInLevel;
+        int _previousMisses;
         public event EventHandler<PlayerStats>? ScoreChanged;
-        public event EventHandler<BeatMapInfo>? SongStart;
+        public event EventHandler<BeatMapInfo?>? SongStart;
         public event EventHandler<BeatMapInfo>? SongUpdate;
         public event EventHandler<SongQuitEventArgs>? SongQuit;
+        public event EventHandler? Missed;
         public event EventHandler? Failed;
 
         readonly WebSocket _mapDataWs = new (MapDataUrl);
@@ -94,6 +96,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
 
             if (mapData.InLevel)
             {
+                _previousMisses = 0;
                 SongStart?.Invoke(this, beatmapInfo);
             }
             else
@@ -143,6 +146,21 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 Rank = liveData.Rank
             };
             ScoreChanged?.Invoke(this, stats);
+
+            CheckMiss(liveData.Misses);
+        }
+
+        /// <summary>
+        /// Checks if the score update contains a miss
+        /// </summary>
+        /// <param name="misses"></param>
+        void CheckMiss(int misses)
+        {
+            if (misses > _previousMisses)
+            {
+                Missed?.Invoke(this, EventArgs.Empty);
+                _previousMisses = misses;
+            }
         }
 
         /// <summary>
