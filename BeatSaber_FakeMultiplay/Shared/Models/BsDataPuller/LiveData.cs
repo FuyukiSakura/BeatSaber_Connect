@@ -16,7 +16,6 @@
         public int Combo { get; set; }
         public int Misses { get; set; }
         public float Accuracy { get; set; }
-        public int[] BlockHitScore { get; set; }
         public float PlayerHealth { get; set; }
         public int TimeElapsed { get; set; }
         public long unixTimestamp { get; set; }
