@@ -1,3 +1,5 @@
+@import '_content/Toolbelt.Blazor.PWA.Updater/Toolbelt.Blazor.PWA.Updater.bundle.scp.css';
+
 /* /Components/Obs/ObsControl.razor.rz.scp.css */
 .warning[b-x5xkjw98xr] {
     display: block;
@@ -581,23 +583,5 @@ main[b-38ik0bayd5] {
     .collapse[b-nwuugwmpdf] {
         /* Never collapse the sidebar for wide screens */
         display: block;
-    }
-}
-/* /Shared/UpdateAvailableDetector.razor.rz.scp.css */
-.floating-update-button[b-p1e9nat4n7] {
-    position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    padding: 1rem 1.5rem;
-    animation: fadein-b-p1e9nat4n7 2s ease-out;
-}
-
-@keyframes fadein-b-p1e9nat4n7 {
-    from {
-        right: -100%;
-    }
-
-    to {
-        right: 2rem;
     }
 }
