@@ -59,7 +59,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 Artist = mapData.SongAuthor,
                 BPM = mapData.BPM,
                 BSR = mapData.BSRKey,
-                CoverImage = mapData.coverImage,
+                CoverImage = mapData.CoverImage,
                 Difficulty = mapData.Difficulty,
                 CustomDifficulty = mapData.CustomDifficultyLabel,
                 Mapper = mapData.Mapper,
