@@ -27,6 +27,11 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BeatSaber
         public string CoverImage { get; set; } = "";
 
         /// <summary>
+        /// Duration of the map
+        /// </summary>
+        public int Duration { get; set; }
+
+        /// <summary>
         /// Gets or sets the custom difficulty label of current game play
         /// specified by the mapper
         /// </summary>

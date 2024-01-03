@@ -68,6 +68,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                         BPM = (int) msg.MapInfoChanged.BPM,
                         BSR = msg.MapInfoChanged.BSRKey,
                         CoverImage = "data:image/gif;base64," + msg.MapInfoChanged.CoverRaw,
+                        Duration = msg.MapInfoChanged.Duration,
                         Difficulty = msg.MapInfoChanged.Difficulty,
                         CustomDifficulty = msg.MapInfoChanged.Difficulty,
                         Mapper = msg.MapInfoChanged.Mapper,

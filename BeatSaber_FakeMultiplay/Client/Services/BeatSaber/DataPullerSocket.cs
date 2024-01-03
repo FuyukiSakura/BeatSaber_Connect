@@ -59,7 +59,8 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 Artist = mapData.SongAuthor,
                 BPM = mapData.BPM,
                 BSR = mapData.BSRKey,
-                CoverImage = mapData.coverImage,
+                CoverImage = mapData.CoverImage,
+                Duration = mapData.Duration,
                 Difficulty = mapData.Difficulty,
                 CustomDifficulty = mapData.CustomDifficultyLabel,
                 Mapper = mapData.Mapper,
@@ -69,7 +70,7 @@ namespace BeatSaber_FakeMultiplay.Client.Services.BeatSaber
                 SongSubName = mapData.SongSubName,
                 SongName = mapData.SongName
             };
-
+            
             InvokeSongStartStop(mapData, beatmapInfo);
             if (mapData.LevelFailed)
             {

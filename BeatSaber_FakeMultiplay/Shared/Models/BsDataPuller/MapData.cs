@@ -21,8 +21,8 @@ namespace BeatSaber_FakeMultiplay.Shared.Models.BsDataPuller
         public string SongAuthor { get; set; } = "";
         public string Mapper { get; set; } = "";
         public string BSRKey { get; set; } = "";
-        public string coverImage { get; set; } = "";
-        public int Length { get; set; }
+        public string CoverImage { get; set; } = "";
+        public int Duration { get; set; }
         public float TimeScale { get; set; }
         public string MapType { get; set; } = "";
         public string Difficulty { get; set; } = "";

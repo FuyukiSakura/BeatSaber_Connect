@@ -12,7 +12,9 @@ builder.Services.AddCors(options =>
         policy  =>
         {
             policy.WithOrigins("https://bi-sei.sakura.live/");
-            policy.WithOrigins("https://beatsaver.com/");
+#if DEBUG
+            policy.WithOrigins("https://localhost:7219/");
+#endif
         });
 });
 
