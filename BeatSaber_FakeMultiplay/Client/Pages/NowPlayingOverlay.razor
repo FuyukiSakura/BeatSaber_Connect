@@ -71,7 +71,7 @@
                 <svg width="90" height="90">
                     <rect width="90" height="90" id="darken"></rect>
                     <circle cx="45" cy="45" r="30" id="remaining"></circle>
-                    <circle cx="45" cy="45" r="30" id="progress"></circle>
+                    <circle cx="45" cy="45" r="30" id="progress" style="@ProgressStyle"></circle>
                 </svg>
 
                 <div>
@@ -164,6 +164,35 @@
     /// Gets or sets if all data should display
     /// </summary>
     readonly ReselimModifiers _mod = new ();
+
+    /// <summary>
+    /// Moves the progress circle according to the progress
+    /// </summary>
+    string ProgressStyle => $"stroke-dasharray: {ProgressCircumference}; stroke-dashoffset: {StrokeDashOffset}";
+
+    // Fact Circle's circumference (2πr)
+    double ProgressCircumference => 2 * Math.PI * 30;
+
+    /// <summary>
+    /// Calculates the stroke-dasharray for the progress circle
+    /// </summary>
+    double StrokeDashOffset
+    {
+        get
+        {
+            try
+            {
+                // Calculate the progress as a percentage
+                var progressPercentage = _stats.TimeElapsed / (double)_beatMapInfo.Duration;
+                // Calculate the dash offset
+                return ProgressCircumference * (1 - progressPercentage);
+            }
+            catch (DivideByZeroException)
+            {
+                return ProgressCircumference * 1;
+            }
+        }
+    }
 
     ///
     /// <inheritdoc />
