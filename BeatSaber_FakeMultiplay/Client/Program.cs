@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using System.Globalization;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,6 +22,7 @@ builder.Services.AddSingleton<BeatSaberSocketResolver>()
     .AddTransient<IBeatSaberSocket, BsPlusSocket>()
     .AddTransient<IBeatSaberSocket, DataPullerSocket>()
     .AddTransient<IBeatSaberSocket, HttpStatusSocket>()
+    .AddPWAUpdater();
 ;
 
 builder.Services.AddLocalization();
